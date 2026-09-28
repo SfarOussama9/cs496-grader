@@ -1,0 +1,1 @@
+{"model": "gemini-3.1-flash-lite", "raw": "{\n  \"answer\": \"An extra legroom seat on a long-haul flight costs EUR 50 per flight for all passengers in the economy cabin.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 298, "output": 45, "thinking": 0}, "latency_s": 1.028, "cost_usd": 0.000142}

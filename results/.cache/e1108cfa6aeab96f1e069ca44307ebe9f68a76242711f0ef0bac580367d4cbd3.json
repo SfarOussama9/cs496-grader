@@ -1,0 +1,1 @@
+{"model": "gemini-3.1-flash-lite", "raw": "{\"answer\": \"The standard size limit for a checked bag, defined as the sum of length, width, and height, must not exceed 158 cm to avoid oversize fees.\", \"policy_covers_question\": true}", "error": null, "tokens": {"input": 419, "output": 47, "thinking": 0}, "latency_s": 1.794, "cost_usd": 0.00017525}

@@ -1,0 +1,1 @@
+{"model": "gemini-3.1-flash-lite", "raw": "{\n  \"answer\": \"Your 8-year-old child will pay EUR 160, which is 80% of the EUR 200 Classic adult fare.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 267, "output": 52, "thinking": 0}, "latency_s": 1.144, "cost_usd": 0.00014475}

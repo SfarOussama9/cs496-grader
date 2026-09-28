@@ -1,0 +1,1 @@
+{"model": "gemini-3.1-flash-lite", "raw": "{\n  \"answer\": \"Yes, as a Corvina Club Gold member, you receive one additional checked bag of up to 27 kg free of charge, even when flying on a Light fare.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 427, "output": 54, "thinking": 0}, "latency_s": 2.258, "cost_usd": 0.00018775}

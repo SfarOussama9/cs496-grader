@@ -1,0 +1,1 @@
+{"model": "gemini-3.1-flash-lite", "raw": "{\"answer\": \"Online check-in opens 36 hours before departure and closes 3 hours before departure.\", \"policy_covers_question\": true}", "error": null, "tokens": {"input": 251, "output": 32, "thinking": 0}, "latency_s": 0.944, "cost_usd": 0.00011075}

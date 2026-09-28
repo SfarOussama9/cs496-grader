@@ -1,0 +1,1 @@
+{"model": "gemini-3.5-flash-lite", "raw": "{\"correct\": false, \"complete\": false, \"grounded\": true, \"reason\": \"For long-haul flights, meal vouchers require a departure delay of 4 hours or more, so a 3-hour delay does not qualify.\"}", "error": null, "tokens": {"input": 936, "output": 51, "thinking": 1289}, "latency_s": 4.903, "cost_usd": 0.0036308}

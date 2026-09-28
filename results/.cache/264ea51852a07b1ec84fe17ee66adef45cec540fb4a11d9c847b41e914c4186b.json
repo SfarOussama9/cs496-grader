@@ -1,0 +1,1 @@
+{"model": "gemini-3.5-flash-lite", "raw": "{\"correct\":true,\"complete\":true,\"grounded\":true,\"reason\":\"The policy does not mention Wi-Fi, and the answer correctly states that it lacks information on this topic.\"}", "error": null, "tokens": {"input": 896, "output": 39, "thinking": 548}, "latency_s": 2.448, "cost_usd": 0.0017362999999999999}

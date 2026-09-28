@@ -1,0 +1,1 @@
+{"model": "gemini-3.1-flash-lite", "raw": "{\n  \"answer\": \"For Light tickets, if the refundable taxes are EUR 15 or less, no refund is paid. As your taxes amount to EUR 12, you are unfortunately not eligible for a refund.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 381, "output": 59, "thinking": 0}, "latency_s": 1.059, "cost_usd": 0.00018375}

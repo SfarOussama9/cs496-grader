@@ -1,0 +1,1 @@
+{"model": "gemini-3.5-flash-lite", "raw": "{\n  \"correct\": true,\n  \"complete\": true,\n  \"grounded\": true,\n  \"reason\": \"Online check-in closes 3 hours before departure, so checking in 2 hours before is correctly answered as not permitted.\"\n}", "error": null, "tokens": {"input": 723, "output": 56, "thinking": 366}, "latency_s": 1.985, "cost_usd": 0.0012719}

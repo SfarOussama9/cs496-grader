@@ -1,0 +1,100 @@
+{"id": "q001", "category": "multi_condition", "intended_verdict": "fail", "flaw": "missing_condition", "style": "padded", "reference": "Flex keeps remaining flights ONLY if the passenger informs Corvina within 24h of the missed departure. Answer omits this."}
+{"id": "q002", "category": "multi_condition", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "> 24h -> may request partner airline rebooking."}
+{"id": "q003", "category": "false_premise", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Per passenger, not per bag; special declaration raises to EUR 3,000 for that bag."}
+{"id": "q004", "category": "multi_condition", "intended_verdict": "pass", "flaw": "none", "style": "padded", "reference": "Free standard seats; extra legroom still paid (25/35/50)."}
+{"id": "q005", "category": "numeric", "intended_verdict": "fail", "flaw": "wrong_rule", "style": "concise", "reference": "Pet + carrier = 9 kg > 8 kg limit -> not accepted in cabin."}
+{"id": "q006", "category": "lookup", "intended_verdict": "pass", "flaw": "none", "style": "padded", "reference": "Free in cabin on all flights incl. long-haul; documents >= 48h before."}
+{"id": "q007", "category": "numeric", "intended_verdict": "fail", "flaw": "wrong_number", "style": "concise", "reference": "Business cabin bag: 12 kg (other fares 9 kg)."}
+{"id": "q008", "category": "lookup", "intended_verdict": "fail", "flaw": "invented_rule", "style": "concise", "reference": "Yes, one personal item 40 x 30 x 15 cm. The duty-free bag allowance is invented."}
+{"id": "q009", "category": "multi_condition", "intended_verdict": "pass", "flaw": "none", "style": "padded", "reference": "Bag placed in hold, EUR 60 fee payable at the gate."}
+{"id": "q010", "category": "numeric", "intended_verdict": "fail", "flaw": "wrong_rule", "style": "padded", "reference": "Points on base fare only, excluding taxes: 150 x 8 = 1,200."}
+{"id": "q011", "category": "numeric", "intended_verdict": "fail", "flaw": "wrong_number", "style": "padded", "reference": "Short-haul, >= 3h, within Corvina's control -> EUR 200."}
+{"id": "q012", "category": "lookup", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Business + Silver + Gold."}
+{"id": "q013", "category": "uncovered", "intended_verdict": "fail", "flaw": "guess_uncovered", "style": "concise", "reference": "Only mobility devices are covered in S11. CPAP not mentioned. Answer guesses."}
+{"id": "q014", "category": "multi_condition", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "> 24h: points redeposited for EUR 30, taxes refunded."}
+{"id": "q015", "category": "uncovered", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Not covered -> should say so."}
+{"id": "q016", "category": "uncovered", "intended_verdict": "fail", "flaw": "guess_uncovered", "style": "concise", "reference": "Not covered. Answer guesses (even if plausible in real life, it is not in this policy)."}
+{"id": "q017", "category": "uncovered", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Not covered -> should say so."}
+{"id": "q018", "category": "multi_condition", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Flex pays for extra legroom (25/35/50)."}
+{"id": "q019", "category": "multi_part", "intended_verdict": "fail", "flaw": "missing_condition", "style": "concise", "reference": "Bank transfer within 30 days OR voucher worth 130%, valid 12 months. Answer omits the voucher option."}
+{"id": "q020", "category": "false_premise", "intended_verdict": "fail", "flaw": "accepts_false_premise", "style": "concise", "reference": "2h arrival delay does not qualify (minimum 3h). Answer accepts the premise."}
+{"id": "q021", "category": "multi_condition", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Weather = extraordinary -> no compensation; care still provided; >= 5h -> option to not travel with full refund."}
+{"id": "q022", "category": "lookup", "intended_verdict": "fail", "flaw": "wrong_rule", "style": "concise", "reference": "Light: no changes allowed. EUR 45 is the Classic change fee."}
+{"id": "q023", "category": "multi_condition", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Moved to lower type -> seat fee refunded."}
+{"id": "q024", "category": "multi_condition", "intended_verdict": "fail", "flaw": "wrong_number", "style": "concise", "reference": "Mandatory: yes. Fee is EUR 70 per direction."}
+{"id": "q025", "category": "false_premise", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Flex = 2 x 27 kg. Premise corrected."}
+{"id": "q026", "category": "numeric", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "7-13 days, departs > 2h earlier -> medium-haul EUR 350."}
+{"id": "q027", "category": "uncovered", "intended_verdict": "fail", "flaw": "guess_uncovered", "style": "concise", "reference": "Insurance not covered. Answer invents an inclusion."}
+{"id": "q028", "category": "lookup", "intended_verdict": "fail", "flaw": "invented_rule", "style": "padded", "reference": "Hotel + transport airport-hotel: correct. EUR 50 phone reimbursement is invented."}
+{"id": "q029", "category": "lookup", "intended_verdict": "pass", "flaw": "none", "style": "padded", "reference": "Opens 36h before, closes 3h before."}
+{"id": "q030", "category": "numeric", "intended_verdict": "fail", "flaw": "wrong_number", "style": "concise", "reference": "Gate closes 25 min before (short/medium) -> 14:05."}
+{"id": "q031", "category": "lookup", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "L + W + H <= 158 cm."}
+{"id": "q032", "category": "multi_condition", "intended_verdict": "fail", "flaw": "wrong_rule", "style": "concise", "reference": "Scratches from normal handling are not covered."}
+{"id": "q033", "category": "multi_condition", "intended_verdict": "fail", "flaw": "missing_condition", "style": "concise", "reference": "No pets in the hold 15 June - 15 September on flights to/from TUN. 1 August from Tunis -> not accepted."}
+{"id": "q034", "category": "lookup", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Valid until end of following calendar year."}
+{"id": "q035", "category": "false_premise", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Tickets cannot be transferred. Premise (a transfer fee exists) must be corrected."}
+{"id": "q036", "category": "lookup", "intended_verdict": "fail", "flaw": "invented_rule", "style": "concise", "reference": "Light = one personal item only; no cabin bag; no checked bag. The 5 kg cabin bag is invented."}
+{"id": "q037", "category": "lookup", "intended_verdict": "fail", "flaw": "missing_condition", "style": "concise", "reference": "Upgrade allowed by paying fare difference, but only up to 3 hours before departure. Answer omits the deadline."}
+{"id": "q038", "category": "numeric", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Child on Classic: 80% x 200 = EUR 160."}
+{"id": "q039", "category": "numeric", "intended_verdict": "fail", "flaw": "wrong_rule", "style": "concise", "reference": "Taxes <= EUR 15 -> no refund is paid."}
+{"id": "q040", "category": "multi_condition", "intended_verdict": "fail", "flaw": "invented_rule", "style": "concise", "reference": "Online check-in opens 36h before for everyone; no Gold exception. 48h is too early."}
+{"id": "q041", "category": "lookup", "intended_verdict": "pass", "flaw": "none", "style": "padded", "reference": "Infant: one checked bag up to 10 kg + one foldable stroller, free."}
+{"id": "q042", "category": "numeric", "intended_verdict": "fail", "flaw": "wrong_number", "style": "concise", "reference": "Long-haul threshold is 4 hours; at 3 hours no meal vouchers."}
+{"id": "q043", "category": "multi_condition", "intended_verdict": "fail", "flaw": "wrong_rule", "style": "concise", "reference": "Partner rebooking only if next Corvina flight departs > 24h after original. 10h -> next Corvina flight."}
+{"id": "q044", "category": "multi_condition", "intended_verdict": "fail", "flaw": "wrong_number", "style": "concise", "reference": "< 7 days notice: exemption only if arrives <= 2h later. 3h later -> EUR 500 due (unless extraordinary)."}
+{"id": "q045", "category": "uncovered", "intended_verdict": "fail", "flaw": "guess_uncovered", "style": "concise", "reference": "Policy does not mention bassinets. Answer invents a service."}
+{"id": "q046", "category": "false_premise", "intended_verdict": "fail", "flaw": "accepts_false_premise", "style": "concise", "reference": "Business includes ONE cabin bag (12 kg) plus one personal item, not two cabin bags. Answer accepts the false premise."}
+{"id": "q047", "category": "numeric", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "40 x 4 = EUR 160 max, receipts required (not at place of residence)."}
+{"id": "q048", "category": "lookup", "intended_verdict": "pass", "flaw": "none", "style": "padded", "reference": "Adult = 12+, on the date of travel."}
+{"id": "q049", "category": "uncovered", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Not covered -> should say so."}
+{"id": "q050", "category": "lookup", "intended_verdict": "fail", "flaw": "missing_condition", "style": "concise", "reference": "Free changes only up to 2h before departure, and fare difference applies. Answer omits both."}
+{"id": "q051", "category": "multi_condition", "intended_verdict": "fail", "flaw": "wrong_rule", "style": "concise", "reference": "On partner-operated codeshares, the operating airline's delay rules apply, not Corvina's compensation table."}
+{"id": "q052", "category": "uncovered", "intended_verdict": "fail", "flaw": "guess_uncovered", "style": "concise", "reference": "Policy does not cover transport to another airport (only airport-hotel transport for overnight stays). Answer invents a reimbursement."}
+{"id": "q053", "category": "multi_part", "intended_verdict": "pass", "flaw": "none", "style": "padded", "reference": "Refund within 7 days or free rebooking; partner airline if next Corvina > 24h; care while waiting."}
+{"id": "q054", "category": "false_premise", "intended_verdict": "fail", "flaw": "accepts_false_premise", "style": "concise", "reference": "UM is optional for ages 12-15 (mandatory only 5-11). EUR 70/direction is correct."}
+{"id": "q055", "category": "multi_condition", "intended_verdict": "fail", "flaw": "wrong_rule", "style": "concise", "reference": "Classic refund only if >= 24h before departure. At 12h, only taxes refundable (minus EUR 15, nothing if <= EUR 15)."}
+{"id": "q056", "category": "false_premise", "intended_verdict": "fail", "flaw": "accepts_false_premise", "style": "concise", "reference": "ESAs do not travel free; they are treated as pets. Answer accepts the false premise."}
+{"id": "q057", "category": "false_premise", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Light: seat assigned free at check-in; selection paid (EUR 8 standard). Premise corrected."}
+{"id": "q058", "category": "lookup", "intended_verdict": "fail", "flaw": "invented_rule", "style": "concise", "reference": "One foldable stroller free (plus 10 kg bag). Car seat and travel cot are not in the policy."}
+{"id": "q059", "category": "false_premise", "intended_verdict": "fail", "flaw": "accepts_false_premise", "style": "concise", "reference": "Online check-in closes 3h before departure; at 90 min it is closed."}
+{"id": "q060", "category": "lookup", "intended_verdict": "pass", "flaw": "none", "style": "padded", "reference": "Up to 6 hours before departure (EUR 20 per flight)."}
+{"id": "q061", "category": "numeric", "intended_verdict": "fail", "flaw": "wrong_number", "style": "concise", "reference": "Long-haul: EUR 50 per flight (EUR 35 is medium-haul)."}
+{"id": "q062", "category": "false_premise", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Infants are not free: 10% of adult fare + taxes. Premise corrected."}
+{"id": "q063", "category": "uncovered", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Not covered -> should say so."}
+{"id": "q064", "category": "uncovered", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Not covered -> should say so (pointing to authorities is acceptable)."}
+{"id": "q065", "category": "numeric", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "158-203 cm -> EUR 75 per bag per flight."}
+{"id": "q066", "category": "uncovered", "intended_verdict": "fail", "flaw": "guess_uncovered", "style": "concise", "reference": "Policy does not mention companion tickets. Answer invents a discount."}
+{"id": "q067", "category": "numeric", "intended_verdict": "fail", "flaw": "wrong_rule", "style": "concise", "reference": "Lithium-ion batteries must not exceed 300 Wh -> 350 Wh not accepted."}
+{"id": "q068", "category": "numeric", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "< 3h arrival delay -> no compensation."}
+{"id": "q069", "category": "lookup", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Codeshare operated by partner: operating airline's baggage/delay/cancellation/denied boarding rules apply; Corvina's S05 still applies to tickets bought from Corvina."}
+{"id": "q070", "category": "lookup", "intended_verdict": "fail", "flaw": "wrong_number", "style": "concise", "reference": "PIR before leaving reclaim; otherwise online within 24 hours (not 48)."}
+{"id": "q071", "category": "uncovered", "intended_verdict": "fail", "flaw": "guess_uncovered", "style": "concise", "reference": "Buying points not covered. Answer invents a service."}
+{"id": "q072", "category": "multi_condition", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Light: carrier allowed in addition to personal item; fee EUR 55/flight; not long-haul."}
+{"id": "q073", "category": "multi_condition", "intended_verdict": "fail", "flaw": "wrong_number", "style": "concise", "reference": "Gold: one additional bag of up to 27 kg, on all fare families including Light."}
+{"id": "q074", "category": "lookup", "intended_verdict": "pass", "flaw": "none", "style": "padded", "reference": "Within 12 months of flight date, via online form."}
+{"id": "q075", "category": "numeric", "intended_verdict": "fail", "flaw": "wrong_number", "style": "concise", "reference": "Short-haul downgrade: 30% -> EUR 90."}
+{"id": "q076", "category": "numeric", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "27-32 kg -> EUR 50 per bag per flight."}
+{"id": "q077", "category": "multi_condition", "intended_verdict": "pass", "flaw": "none", "style": "padded", "reference": "No: online closes 3h before; airport check-in closes 60 min (short/medium) / 75 min (long)."}
+{"id": "q078", "category": "false_premise", "intended_verdict": "fail", "flaw": "accepts_false_premise", "style": "concise", "reference": "Corvina is not liable for jewellery in checked bags unless special declaration. Answer accepts premise."}
+{"id": "q079", "category": "multi_condition", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Light/Classic no-show cancels all remaining flights."}
+{"id": "q080", "category": "uncovered", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Not covered -> should say so (mentioning child/infant fares is accurate)."}
+{"id": "q081", "category": "multi_condition", "intended_verdict": "fail", "flaw": "wrong_rule", "style": "concise", "reference": "ATC strikes are extraordinary circumstances -> no compensation. Only Corvina's own staff strikes are within its control."}
+{"id": "q082", "category": "exception", "intended_verdict": "fail", "flaw": "invented_rule", "style": "concise", "reference": "Policy has no illness exception; standard Classic refund rules apply (>= 24h, EUR 90 fee). Waiver is invented."}
+{"id": "q083", "category": "multi_condition", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Lower fare difference never refunded."}
+{"id": "q084", "category": "multi_condition", "intended_verdict": "fail", "flaw": "missing_condition", "style": "concise", "reference": "EUR 40/day max 5 days, BUT receipts required and not payable at place of residence. Answer omits both conditions."}
+{"id": "q085", "category": "lookup", "intended_verdict": "fail", "flaw": "wrong_number", "style": "concise", "reference": "At least 48 hours before departure, by phone."}
+{"id": "q086", "category": "multi_condition", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "No cabin pets on long-haul. Hold possible (45 kg incl. crate, EUR 120/flight) except brachycephalic breeds and TUN summer embargo."}
+{"id": "q087", "category": "uncovered", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Not covered -> should say so."}
+{"id": "q088", "category": "lookup", "intended_verdict": "fail", "flaw": "missing_condition", "style": "concise", "reference": "Also: priority baggage, extra 27 kg bag, free standard seat selection, 50% bonus points; lounge (member + 1 guest) only on medium/long-haul. Answer is incomplete."}
+{"id": "q089", "category": "multi_condition", "intended_verdict": "fail", "flaw": "missing_condition", "style": "concise", "reference": "EUR 350 only if the cause was within Corvina's control; none for extraordinary circumstances. Answer omits the condition."}
+{"id": "q090", "category": "uncovered", "intended_verdict": "fail", "flaw": "guess_uncovered", "style": "concise", "reference": "Not covered. The 2-hour rule applies only to unaccompanied minors; answer over-generalizes."}
+{"id": "q091", "category": "multi_part", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Online EUR 35 (>= 6h before), airport EUR 70, per bag per flight."}
+{"id": "q092", "category": "lookup", "intended_verdict": "pass", "flaw": "none", "style": "padded", "reference": "Yes; no compensation; care still provided."}
+{"id": "q093", "category": "numeric", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "1,000 x 15 = 15,000; +25% = 18,750."}
+{"id": "q094", "category": "multi_condition", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": ">= 14 days notice -> no compensation; refund or rebooking still available."}
+{"id": "q095", "category": "multi_condition", "intended_verdict": "fail", "flaw": "wrong_rule", "style": "concise", "reference": "The pet carrier counts as the cabin bag -> cannot bring both."}
+{"id": "q096", "category": "numeric", "intended_verdict": "pass", "flaw": "none", "style": "padded", "reference": "45 x 2 passengers x 2 directions = EUR 180 (+ fare difference)."}
+{"id": "q097", "category": "numeric", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Medium-haul, own-staff strike = within control -> EUR 350."}
+{"id": "q098", "category": "false_premise", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Flex: full refund up to 2h; after/no-show minus EUR 50. EUR 90 is Classic. Premise corrected."}
+{"id": "q099", "category": "uncovered", "intended_verdict": "pass", "flaw": "none", "style": "concise", "reference": "Not covered -> should say so."}
+{"id": "q100", "category": "multi_condition", "intended_verdict": "pass", "flaw": "none", "style": "padded", "reference": "Flex: full refund up to 2h before departure."}

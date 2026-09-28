@@ -1,0 +1,100 @@
+{"id": "q001", "labellers": ["oussama", "ines"], "verdict": "fail", "source": "agreed", "correct": true, "complete": false, "grounded": true}
+{"id": "q002", "labellers": ["oussama", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q003", "labellers": ["oussama", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q004", "labellers": ["oussama", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q005", "labellers": ["oussama", "ines"], "verdict": "fail", "source": "agreed", "correct": false, "complete": null, "grounded": null}
+{"id": "q006", "labellers": ["oussama", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q007", "labellers": ["oussama", "ines"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": null}
+{"id": "q008", "labellers": ["oussama", "ines"], "verdict": "fail", "source": "agreed", "correct": false, "complete": null, "grounded": null}
+{"id": "q009", "labellers": ["oussama", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q010", "labellers": ["oussama", "ines"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": null}
+{"id": "q011", "labellers": ["oussama", "ines"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": null}
+{"id": "q012", "labellers": ["oussama", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q013", "labellers": ["oussama", "ines"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q014", "labellers": ["oussama", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q015", "labellers": ["oussama", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q016", "labellers": ["oussama", "ines"], "verdict": "fail", "source": "adjudicated", "reason": "Policy is silent on e-cigarettes; the answer guesses instead of saying so.", "correct": true, "complete": true, "grounded": false}
+{"id": "q017", "labellers": ["oussama", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q018", "labellers": ["oussama", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q019", "labellers": ["oussama", "ines"], "verdict": "fail", "source": "agreed", "correct": true, "complete": false, "grounded": null}
+{"id": "q020", "labellers": ["oussama", "ines"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q021", "labellers": ["oussama", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q022", "labellers": ["oussama", "ines"], "verdict": "fail", "source": "agreed", "correct": null, "complete": false, "grounded": false}
+{"id": "q023", "labellers": ["oussama", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q024", "labellers": ["oussama", "ines"], "verdict": "fail", "source": "agreed", "correct": false, "complete": null, "grounded": false}
+{"id": "q025", "labellers": ["oussama", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q026", "labellers": ["oussama", "feriel"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q027", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "adjudicated", "reason": "Travel insurance is not in the policy; the answer invents it.", "correct": true, "complete": true, "grounded": false}
+{"id": "q028", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "adjudicated", "reason": "Hotel and transport are correct (S06.2); the EUR 50 phone reimbursement is invented.", "correct": true, "complete": true, "grounded": false}
+{"id": "q029", "labellers": ["oussama", "feriel"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q030", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q031", "labellers": ["oussama", "feriel"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q032", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q033", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": null}
+{"id": "q034", "labellers": ["oussama", "feriel"], "verdict": "pass", "source": "adjudicated", "reason": "S14.1: status is valid until the end of the following calendar year.", "correct": true, "complete": true, "grounded": true}
+{"id": "q035", "labellers": ["oussama", "feriel"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q036", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q037", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "agreed", "correct": true, "complete": false, "grounded": true}
+{"id": "q038", "labellers": ["oussama", "feriel"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q039", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q040", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q041", "labellers": ["oussama", "feriel"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q042", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "adjudicated", "reason": "S06.1: long-haul meal vouchers start at 4 hours, so a 3-hour delay gives none.", "correct": false, "complete": true, "grounded": true}
+{"id": "q043", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "adjudicated", "reason": "S07.1: partner rebooking only if the next Corvina flight departs more than 24 hours later.", "correct": false, "complete": true, "grounded": true}
+{"id": "q044", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q045", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q046", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "adjudicated", "reason": "S02.4: Business includes one cabin bag; the answer accepts the false premise of two.", "correct": false, "complete": true, "grounded": true}
+{"id": "q047", "labellers": ["oussama", "feriel"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q048", "labellers": ["oussama", "feriel"], "verdict": "pass", "source": "adjudicated", "reason": "S01.7: adult is 12 and over on the date of travel; padding is ignored per the guide.", "correct": true, "complete": true, "grounded": true}
+{"id": "q049", "labellers": ["oussama", "feriel"], "verdict": "pass", "source": "adjudicated", "reason": "Wi-Fi is not covered and the answer says so; suggesting to contact Corvina is allowed.", "correct": true, "complete": true, "grounded": true}
+{"id": "q050", "labellers": ["oussama", "feriel"], "verdict": "fail", "source": "agreed", "correct": true, "complete": false, "grounded": true}
+{"id": "q051", "labellers": ["feriel", "faten"], "verdict": "fail", "source": "adjudicated", "reason": "S01.2: on partner-operated codeshares the operating airline's delay rules apply.", "correct": false, "complete": true, "grounded": true}
+{"id": "q052", "labellers": ["feriel", "faten"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q053", "labellers": ["feriel", "faten"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q054", "labellers": ["feriel", "faten"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": null}
+{"id": "q055", "labellers": ["feriel", "faten"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q056", "labellers": ["feriel", "faten"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q057", "labellers": ["feriel", "faten"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q058", "labellers": ["feriel", "faten"], "verdict": "fail", "source": "agreed", "correct": null, "complete": null, "grounded": false}
+{"id": "q059", "labellers": ["feriel", "faten"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": null}
+{"id": "q060", "labellers": ["feriel", "faten"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q061", "labellers": ["feriel", "faten"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q062", "labellers": ["feriel", "faten"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q063", "labellers": ["feriel", "faten"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q064", "labellers": ["feriel", "faten"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q065", "labellers": ["feriel", "faten"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q066", "labellers": ["feriel", "faten"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q067", "labellers": ["feriel", "faten"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q068", "labellers": ["feriel", "faten"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q069", "labellers": ["feriel", "faten"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q070", "labellers": ["feriel", "faten"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": null}
+{"id": "q071", "labellers": ["feriel", "faten"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q072", "labellers": ["feriel", "faten"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q073", "labellers": ["feriel", "faten"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": null}
+{"id": "q074", "labellers": ["feriel", "faten"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q075", "labellers": ["feriel", "faten"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": null}
+{"id": "q076", "labellers": ["faten", "ines"], "verdict": "pass", "source": "adjudicated", "reason": "S04.4: 27-32 kg costs EUR 50 per bag per flight; nothing outcome-changing is missing.", "correct": true, "complete": true, "grounded": true}
+{"id": "q077", "labellers": ["faten", "ines"], "verdict": "pass", "source": "adjudicated", "reason": "S09.1-2: online check-in closes 3 h before; airport check-in deadlines are stated correctly.", "correct": true, "complete": true, "grounded": true}
+{"id": "q078", "labellers": ["faten", "ines"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q079", "labellers": ["faten", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q080", "labellers": ["faten", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q081", "labellers": ["faten", "ines"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q082", "labellers": ["faten", "ines"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q083", "labellers": ["faten", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q084", "labellers": ["faten", "ines"], "verdict": "fail", "source": "agreed", "correct": true, "complete": false, "grounded": true}
+{"id": "q085", "labellers": ["faten", "ines"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q086", "labellers": ["faten", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q087", "labellers": ["faten", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q088", "labellers": ["faten", "ines"], "verdict": "fail", "source": "agreed", "correct": true, "complete": false, "grounded": true}
+{"id": "q089", "labellers": ["faten", "ines"], "verdict": "fail", "source": "adjudicated", "reason": "S06.3: EUR 350 is due only if the cause was within Corvina's control; the answer omits this.", "correct": true, "complete": false, "grounded": true}
+{"id": "q090", "labellers": ["faten", "ines"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q091", "labellers": ["faten", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q092", "labellers": ["faten", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q093", "labellers": ["faten", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q094", "labellers": ["faten", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q095", "labellers": ["faten", "ines"], "verdict": "fail", "source": "agreed", "correct": false, "complete": false, "grounded": false}
+{"id": "q096", "labellers": ["faten", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q097", "labellers": ["faten", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q098", "labellers": ["faten", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q099", "labellers": ["faten", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}
+{"id": "q100", "labellers": ["faten", "ines"], "verdict": "pass", "source": "agreed", "correct": true, "complete": true, "grounded": true}

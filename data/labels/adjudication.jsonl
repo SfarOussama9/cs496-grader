@@ -1,0 +1,13 @@
+{"id": "q016", "correct": true, "complete": true, "grounded": false, "verdict": "fail", "reason": "Policy is silent on e-cigarettes; the answer guesses instead of saying so."}
+{"id": "q027", "correct": true, "complete": true, "grounded": false, "verdict": "fail", "reason": "Travel insurance is not in the policy; the answer invents it."}
+{"id": "q028", "correct": true, "complete": true, "grounded": false, "verdict": "fail", "reason": "Hotel and transport are correct (S06.2); the EUR 50 phone reimbursement is invented."}
+{"id": "q034", "correct": true, "complete": true, "grounded": true, "verdict": "pass", "reason": "S14.1: status is valid until the end of the following calendar year."}
+{"id": "q042", "correct": false, "complete": true, "grounded": true, "verdict": "fail", "reason": "S06.1: long-haul meal vouchers start at 4 hours, so a 3-hour delay gives none."}
+{"id": "q043", "correct": false, "complete": true, "grounded": true, "verdict": "fail", "reason": "S07.1: partner rebooking only if the next Corvina flight departs more than 24 hours later."}
+{"id": "q046", "correct": false, "complete": true, "grounded": true, "verdict": "fail", "reason": "S02.4: Business includes one cabin bag; the answer accepts the false premise of two."}
+{"id": "q048", "correct": true, "complete": true, "grounded": true, "verdict": "pass", "reason": "S01.7: adult is 12 and over on the date of travel; padding is ignored per the guide."}
+{"id": "q049", "correct": true, "complete": true, "grounded": true, "verdict": "pass", "reason": "Wi-Fi is not covered and the answer says so; suggesting to contact Corvina is allowed."}
+{"id": "q051", "correct": false, "complete": true, "grounded": true, "verdict": "fail", "reason": "S01.2: on partner-operated codeshares the operating airline's delay rules apply."}
+{"id": "q076", "correct": true, "complete": true, "grounded": true, "verdict": "pass", "reason": "S04.4: 27-32 kg costs EUR 50 per bag per flight; nothing outcome-changing is missing."}
+{"id": "q077", "correct": true, "complete": true, "grounded": true, "verdict": "pass", "reason": "S09.1-2: online check-in closes 3 h before; airport check-in deadlines are stated correctly."}
+{"id": "q089", "correct": true, "complete": false, "grounded": true, "verdict": "fail", "reason": "S06.3: EUR 350 is due only if the cause was within Corvina's control; the answer omits this."}

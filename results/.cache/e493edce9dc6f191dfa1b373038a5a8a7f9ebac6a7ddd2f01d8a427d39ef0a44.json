@@ -1,0 +1,1 @@
+{"model": "gemini-3.5-flash-lite", "raw": "{\"correct\": false, \"complete\": false, \"grounded\": false, \"reason\": \"The policy states that the unaccompanied minor service is optional for children aged 12 to 15, so it is not mandatory for a 13-year-old.\"}", "error": null, "tokens": {"input": 740, "output": 57, "thinking": 1011}, "latency_s": 4.157, "cost_usd": 0.002892}

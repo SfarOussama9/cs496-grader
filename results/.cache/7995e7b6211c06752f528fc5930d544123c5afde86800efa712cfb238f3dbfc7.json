@@ -1,0 +1,1 @@
+{"model": "gemini-3.5-flash-lite", "raw": "{\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"Policy S08.4 specifies a 30% refund for short-haul downgrades, which is EUR 90 for a EUR 300 ticket and is paid within 7 days.\"}", "error": null, "tokens": {"input": 784, "output": 63, "thinking": 412}, "latency_s": 1.876, "cost_usd": 0.0014227}

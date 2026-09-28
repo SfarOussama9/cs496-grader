@@ -1,0 +1,1 @@
+{"model": "gemini-3.1-flash-lite", "raw": "{\"answer\": \"Priority check-in is available to Business passengers as well as Corvina Club Silver and Gold members.\", \"policy_covers_question\": true}", "error": null, "tokens": {"input": 249, "output": 33, "thinking": 0}, "latency_s": 1.899, "cost_usd": 0.00011175}

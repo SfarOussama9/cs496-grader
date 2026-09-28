@@ -1,0 +1,353 @@
+<title>Corvina Labelling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
+<style>
+  :root {
+    --bg: #eef1f3; --panel: #ffffff; --ink: #17212b; --muted: #5d6b78; --line: #d3dae0;
+    --accent: #1f5f8b; --accent-ink: #ffffff; --yes: #2b7a4b; --no: #b5421f;
+    --policy: #f4f6f8; --focus: #e3edf5;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #11171c; --panel: #1a2229; --ink: #e6ebef; --muted: #93a1ad; --line: #2e3a44;
+      --accent: #78b2dc; --accent-ink: #0d1a24; --yes: #6cc293; --no: #ef8f6f;
+      --policy: #151c22; --focus: #1f2e3a;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #11171c; --panel: #1a2229; --ink: #e6ebef; --muted: #93a1ad; --line: #2e3a44;
+    --accent: #78b2dc; --accent-ink: #0d1a24; --yes: #6cc293; --no: #ef8f6f;
+    --policy: #151c22; --focus: #1f2e3a;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 var(--sans); }
+  main { max-width: 860px; margin: 0 auto; padding-block: 16px 48px; padding-inline: 16px; }
+  h1 { font-size: 1.45rem; margin: 8px 0 4px; text-wrap: balance; }
+  p { margin: 0; }
+  .stack { display: grid; gap: 12px; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+  .field-label { font-weight: 600; display: block; margin-bottom: 6px; }
+  input[type=text], textarea { width: 100%; padding: 10px; font: inherit; border: 1px solid var(--line);
+    border-radius: 8px; background: var(--bg); color: var(--ink); }
+  textarea { font: .78rem/1.4 var(--mono); min-height: 140px; }
+  button { font: inherit; cursor: pointer; border: 1px solid var(--line); border-radius: 8px;
+    padding: 8px 14px; background: var(--panel); color: var(--ink); }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+  button:disabled { opacity: .45; cursor: default; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .grow { flex: 1; }
+  .slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
+  .slot { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); border-radius: 8px; padding: 10px; cursor: pointer; }
+  .slot:has(input:checked) { border-color: var(--accent); background: var(--focus); }
+  .slot b { display: block; }
+  .ids { font: .78rem var(--mono); color: var(--muted); }
+  .progress { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+  .progress > div { height: 100%; background: var(--accent); transition: width .2s; }
+  .tag { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .item-id { font: .85rem var(--mono); color: var(--muted); }
+  .policy { background: var(--policy); border-radius: 8px; padding: 12px; white-space: pre-wrap;
+    font-size: .88rem; max-height: 42vh; overflow-y: auto; margin-top: 6px; }
+  .qa { display: grid; gap: 4px; }
+  .qa p { margin-bottom: 10px; }
+  .crit { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 8px; flex-wrap: wrap; }
+  .crit.active { background: var(--focus); }
+  .crit .name { flex: 1; min-width: 200px; }
+  .crit button.on-yes { background: var(--yes); color: #fff; border-color: var(--yes); }
+  .crit button.on-no { background: var(--no); color: #fff; border-color: var(--no); }
+  .verdict { font-weight: 700; min-height: 1.5em; }
+  .verdict.pass { color: var(--yes); } .verdict.fail, .verdict.dropped { color: var(--no); }
+  .guide { white-space: pre-wrap; font-size: .9rem; max-height: 55vh; overflow-y: auto; margin-top: 8px; }
+  details summary { cursor: pointer; font-weight: 600; }
+  kbd { font: .78rem var(--mono); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; }
+  .status { font-weight: 600; min-height: 1.4em; }
+  .status.ok { color: var(--yes); } .status.err { color: var(--no); }
+  @media (prefers-reduced-motion: reduce) { .progress > div { transition: none; } }
+</style>
+
+<main>
+  <section id="start" class="stack">
+    <div>
+      <h1>Corvina Airways answer labelling</h1>
+      <p class="muted">You'll judge answers to customer questions about a fictional airline's policy. Judge each answer only against the policy text shown, and don't discuss items with the other labellers until everyone is done.</p>
+    </div>
+    <details class="panel" open><summary>Labelling guide: read this first (5 min)</summary><div class="guide" id="guideStart"></div></details>
+    <div class="panel stack">
+      <div id="slotBox">
+        <span class="field-label">Which labeller are you?</span>
+        <div class="slots" id="slots"></div>
+      </div>
+      <div>
+        <label class="field-label" for="name">Your first name</label>
+        <input id="name" type="text" placeholder="e.g. yasmine" autocomplete="off">
+      </div>
+      <div class="row"><button class="primary" id="go">Start labelling</button><span class="status err" id="startMsg"></span></div>
+      <p class="muted">Your progress is kept in this browser, so you can close the page and come back on the same device.</p>
+    </div>
+  </section>
+
+  <section id="work" class="stack" hidden>
+    <div class="stack" style="gap:8px">
+      <div class="row">
+        <b id="who"></b><span class="muted" id="count"></span><span class="grow"></span>
+        <button id="prev">&larr; Prev</button><button id="next">Next &rarr;</button>
+        <button id="guideBtn">Guide</button><button class="primary" id="finishBtn">Send my labels</button>
+      </div>
+      <div class="progress"><div id="bar"></div></div>
+    </div>
+
+    <div class="panel" id="guideWork" hidden><div class="guide" id="guideText"></div></div>
+
+    <div class="panel stack" id="finish" hidden>
+      <p><b id="finishTitle"></b></p>
+      <p class="muted">Copy your labels and paste them into a message to the person who sent you this page. That's all they need.</p>
+      <div class="row">
+        <button class="primary" id="copyBtn">Copy my labels</button>
+        <button id="saveBtn">Save as a file</button>
+        <span class="status" id="finishMsg"></span>
+      </div>
+      <textarea id="exportText" readonly hidden aria-label="Your labels"></textarea>
+    </div>
+
+    <div class="panel">
+      <div class="item-id" id="itemId"></div>
+      <div class="tag" style="margin-top:8px">Policy</div>
+      <div class="policy" id="policy"></div>
+    </div>
+    <div class="panel qa">
+      <div class="tag">Question</div><p id="question"></p>
+      <div class="tag">Answer</div><p id="answer"></p>
+    </div>
+    <div class="panel stack">
+      <div id="crits"></div>
+      <div class="verdict" id="verdict"></div>
+      <input id="note" type="text" placeholder="Note (optional)">
+      <div class="row" id="dropRow" hidden>
+        <input id="dropReason" type="text" placeholder="Why drop this item? (required)" class="grow" style="width:auto">
+        <button id="dropConfirm">Drop item</button><button id="dropCancel">Cancel</button>
+      </div>
+      <div class="row">
+        <button class="primary" id="save">Save &amp; next</button>
+        <button id="drop">Drop item&hellip;</button><span class="grow"></span>
+      </div>
+      <p class="muted">Keys: <kbd>y</kbd>/<kbd>n</kbd> answer the highlighted check, <kbd>Backspace</kbd> undo,
+        <kbd>Enter</kbd> save &amp; next, <kbd>d</kbd> drop, <kbd>&larr;</kbd>/<kbd>&rarr;</kbd> move.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+const DATA = /*__DATA__*/null;
+const CRITERIA = [
+  ["correct", "Correct: everything stated agrees with the policy?"],
+  ["complete", "Complete: nothing missing that changes the outcome?"],
+  ["grounded", "Grounded: no claims the policy doesn't support?"],
+];
+const $ = (id) => document.getElementById(id);
+const byId = Object.fromEntries(DATA.items.map((it) => [it.id, it]));
+let name = "", slot = 0, items = [], pos = 0, labels = {}, draft = [];
+
+function storageKey() { return `corvina-labels-v2:${DATA.pageId}:${slot}:${name}`; }
+function load() {
+  try { labels = JSON.parse(localStorage.getItem(storageKey()) || "{}"); } catch (e) { labels = {}; }
+}
+function persist() {
+  try { localStorage.setItem(storageKey(), JSON.stringify(labels)); } catch (e) { /* copying still works this visit */ }
+}
+function now() { return new Date().toISOString().slice(0, 19) + "+00:00"; }
+
+function buildStart() {
+  $("guideStart").textContent = DATA.guide;
+  $("guideText").textContent = DATA.guide;
+  if (!DATA.assignments) { $("slotBox").hidden = true; return; }
+  DATA.assignments.forEach((ids, i) => {
+    const label = document.createElement("label");
+    label.className = "slot";
+    const radio = document.createElement("input");
+    radio.type = "radio"; radio.name = "slot"; radio.value = String(i + 1); radio.id = "slot" + (i + 1);
+    const text = document.createElement("span");
+    const b = document.createElement("b"); b.textContent = `Labeller ${i + 1}`;
+    const s = document.createElement("span"); s.className = "ids"; s.textContent = `${ids.length} items`;
+    text.append(b, s); label.append(radio, text); $("slots").appendChild(label);
+  });
+}
+
+function start() {
+  name = $("name").value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
+  const picked = document.querySelector("input[name=slot]:checked");
+  if (DATA.assignments && !picked) { $("startMsg").textContent = "Pick your labeller number."; return; }
+  if (!name) { $("startMsg").textContent = "Type your first name."; $("name").focus(); return; }
+  slot = picked ? Number(picked.value) : 0;
+  const ids = DATA.assignments ? DATA.assignments[slot - 1] : DATA.items.map((it) => it.id);
+  items = ids.map((id) => byId[id]);
+  load();
+  const firstTodo = items.findIndex((it) => !labels[it.id]);
+  pos = firstTodo === -1 ? 0 : firstTodo;
+  $("start").hidden = true; $("work").hidden = false;
+  $("who").textContent = slot ? `${name} (labeller ${slot})` : name;
+  render();
+}
+
+function doneCount() { return items.filter((x) => labels[x.id]).length; }
+
+function render() {
+  // A new item always starts with the keyboard free: the cursor must not stay in
+  // the note or drop box, or the next y/n/Enter keys would be typed into it.
+  if (document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
+  const it = items[pos];
+  const done = doneCount();
+  $("count").textContent = `item ${pos + 1} of ${items.length}, ${done} labelled`;
+  $("bar").style.width = (100 * done / items.length) + "%";
+  $("itemId").textContent = it.id;
+  $("policy").textContent = it.sections.slice().sort().map((s) => DATA.sections[s]).join("\n\n");
+  $("policy").scrollTop = 0;
+  $("question").textContent = it.question;
+  $("answer").textContent = it.answer;
+  const saved = labels[it.id];
+  draft = saved && !saved.dropped ? CRITERIA.map(([k]) => saved[k]) : [];
+  $("note").value = saved ? (saved.note || "") : "";
+  $("dropRow").hidden = true; $("dropReason").value = "";
+  $("prev").disabled = pos === 0;
+  $("next").disabled = pos === items.length - 1;
+  renderForm(saved);
+  window.scrollTo(0, 0);
+}
+
+function renderForm(saved) {
+  $("crits").innerHTML = "";
+  CRITERIA.forEach(([key, text], i) => {
+    const row = document.createElement("div");
+    row.className = "crit" + (i === draft.length ? " active" : "");
+    const label = document.createElement("span");
+    label.className = "name"; label.textContent = text;
+    row.appendChild(label);
+    [["Yes", true], ["No", false]].forEach(([t, v]) => {
+      const b = document.createElement("button");
+      b.textContent = t;
+      if (draft[i] === v) b.className = v ? "on-yes" : "on-no";
+      b.onclick = () => { if (i <= draft.length) { draft = draft.slice(0, i); draft[i] = v; renderForm(); } };
+      row.appendChild(b);
+    });
+    $("crits").appendChild(row);
+  });
+  const v = $("verdict");
+  if (saved && saved.dropped && draft.length === 0) {
+    v.className = "verdict dropped"; v.textContent = "Dropped: " + saved.drop_reason;
+  } else if (draft.length === 3) {
+    const pass = draft.every(Boolean);
+    v.className = "verdict " + (pass ? "pass" : "fail"); v.textContent = pass ? "PASS" : "FAIL";
+  } else { v.className = "verdict"; v.textContent = ""; }
+  $("save").disabled = draft.length !== 3;
+}
+
+function answer(v) { if (draft.length < 3) { draft.push(v); renderForm(); } }
+
+function record(row) {
+  labels[items[pos].id] = row; persist();
+  if (!$("finish").hidden) refreshFinish();
+  advance();
+}
+
+function save() {
+  if (draft.length !== 3) return;
+  const row = { id: items[pos].id, labeller: name, dropped: false };
+  CRITERIA.forEach(([k], i) => { row[k] = draft[i]; });
+  row.verdict = draft.every(Boolean) ? "pass" : "fail";
+  row.note = $("note").value.trim();
+  row.labelled_at = now();
+  record(row);
+}
+
+function openDrop() { $("dropRow").hidden = false; $("dropReason").focus(); }
+function confirmDrop() {
+  const reason = $("dropReason").value.trim();
+  if (!reason) { $("dropReason").focus(); return; }
+  record({ id: items[pos].id, labeller: name, dropped: true, drop_reason: reason, labelled_at: now() });
+}
+
+function advance() {
+  const nextTodo = items.findIndex((x, i) => i > pos && !labels[x.id]);
+  const anyTodo = items.findIndex((x) => !labels[x.id]);
+  if (nextTodo !== -1) pos = nextTodo;
+  else if (anyTodo !== -1) pos = anyTodo;
+  else { render(); openFinish(); return; }
+  render();
+}
+
+function exportText() {
+  return items.filter((it) => labels[it.id]).map((it) => JSON.stringify(labels[it.id])).join("\n") + "\n";
+}
+
+function refreshFinish() {
+  const done = doneCount();
+  $("finishTitle").textContent = done === items.length
+    ? `All ${items.length} items labelled. Thank you!`
+    : `${done} of ${items.length} items labelled so far. You can send what you have now and the rest later.`;
+  $("exportText").value = exportText();
+}
+
+function openFinish() {
+  refreshFinish();
+  $("finish").hidden = false; $("finishMsg").textContent = "";
+  $("finish").scrollIntoView({ block: "start" });
+}
+
+async function copyLabels() {
+  const text = exportText();
+  const msg = $("finishMsg");
+  try {
+    await navigator.clipboard.writeText(text);
+    msg.className = "status ok"; msg.textContent = "Copied. Now paste it into a message.";
+  } catch (e) {
+    const box = $("exportText");
+    box.hidden = false; box.value = text; box.focus(); box.select();
+    msg.className = "status"; msg.textContent = "Select all the text below and copy it.";
+  }
+}
+
+function saveFile() {
+  const msg = $("finishMsg");
+  const filename = `${name}.txt`;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([exportText()], { type: "text/plain" }));
+  a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+  msg.className = "status ok"; msg.textContent = "Saved to your downloads. Send that file.";
+}
+
+buildStart();
+
+$("go").onclick = start;
+$("name").addEventListener("keydown", (e) => { if (e.key === "Enter") start(); });
+$("prev").onclick = () => { if (pos > 0) { pos--; render(); } };
+$("next").onclick = () => { if (pos < items.length - 1) { pos++; render(); } };
+$("guideBtn").onclick = () => { $("guideWork").hidden = !$("guideWork").hidden; };
+$("finishBtn").onclick = () => { if ($("finish").hidden) openFinish(); else $("finish").hidden = true; };
+$("copyBtn").onclick = copyLabels;
+$("saveBtn").onclick = saveFile;
+$("save").onclick = save;
+$("drop").onclick = openDrop;
+$("dropConfirm").onclick = confirmDrop;
+$("dropCancel").onclick = () => { $("dropRow").hidden = true; };
+$("dropReason").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); confirmDrop(); } });
+$("note").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); save(); } });
+
+document.addEventListener("keydown", (e) => {
+  const tag = e.target.tagName;
+  if ($("work").hidden || tag === "INPUT" || tag === "TEXTAREA" || e.ctrlKey || e.metaKey || e.altKey) return;
+  const k = e.key.toLowerCase();
+  if (["y", "n", "enter", "d"].includes(k)) e.preventDefault();  // keep the key out of focused buttons and the drop box
+  if (k === "y") answer(true);
+  else if (k === "n") answer(false);
+  else if (k === "backspace") { e.preventDefault(); draft.pop(); renderForm(); }
+  else if (k === "enter") save();
+  else if (k === "d") openDrop();
+  else if (k === "arrowleft") $("prev").click();
+  else if (k === "arrowright") $("next").click();
+});
+</script>

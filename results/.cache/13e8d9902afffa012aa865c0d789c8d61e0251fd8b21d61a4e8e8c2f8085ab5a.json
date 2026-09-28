@@ -1,0 +1,1 @@
+{"model": "gemini-3.1-flash-lite", "raw": "{\n  \"answer\": \"For unaccompanied minors, the mandatory service is available for connecting flights at Tunis-Carthage (TUN) only when the connection time is at least 2 hours.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 665, "output": 52, "thinking": 0}, "latency_s": 1.573, "cost_usd": 0.00024425}

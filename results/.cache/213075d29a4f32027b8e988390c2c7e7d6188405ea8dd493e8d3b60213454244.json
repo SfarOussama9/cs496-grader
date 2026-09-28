@@ -1,0 +1,1 @@
+{"model": "gemini-3.1-flash-lite", "raw": "{\n  \"answer\": \"According to our policy, if the new fare is lower than the original fare, the difference is not refunded regardless of the fare family.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 379, "output": 46, "thinking": 0}, "latency_s": 4.914, "cost_usd": 0.00016375}

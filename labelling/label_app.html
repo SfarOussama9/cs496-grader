@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<title>Corvina Labelling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
+<style>
+  :root {
+    --bg: #eef1f3; --panel: #ffffff; --ink: #17212b; --muted: #5d6b78; --line: #d3dae0;
+    --accent: #1f5f8b; --accent-ink: #ffffff; --yes: #2b7a4b; --no: #b5421f;
+    --policy: #f4f6f8; --focus: #e3edf5;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #11171c; --panel: #1a2229; --ink: #e6ebef; --muted: #93a1ad; --line: #2e3a44;
+      --accent: #78b2dc; --accent-ink: #0d1a24; --yes: #6cc293; --no: #ef8f6f;
+      --policy: #151c22; --focus: #1f2e3a;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #11171c; --panel: #1a2229; --ink: #e6ebef; --muted: #93a1ad; --line: #2e3a44;
+    --accent: #78b2dc; --accent-ink: #0d1a24; --yes: #6cc293; --no: #ef8f6f;
+    --policy: #151c22; --focus: #1f2e3a;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 var(--sans); }
+  main { max-width: 860px; margin: 0 auto; padding-block: 16px 48px; padding-inline: 16px; }
+  h1 { font-size: 1.45rem; margin: 8px 0 4px; text-wrap: balance; }
+  p { margin: 0; }
+  .stack { display: grid; gap: 12px; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+  .field-label { font-weight: 600; display: block; margin-bottom: 6px; }
+  input[type=text], textarea { width: 100%; padding: 10px; font: inherit; border: 1px solid var(--line);
+    border-radius: 8px; background: var(--bg); color: var(--ink); }
+  textarea { font: .78rem/1.4 var(--mono); min-height: 140px; }
+  button { font: inherit; cursor: pointer; border: 1px solid var(--line); border-radius: 8px;
+    padding: 8px 14px; background: var(--panel); color: var(--ink); }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+  button:disabled { opacity: .45; cursor: default; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .grow { flex: 1; }
+  .slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
+  .slot { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); border-radius: 8px; padding: 10px; cursor: pointer; }
+  .slot:has(input:checked) { border-color: var(--accent); background: var(--focus); }
+  .slot b { display: block; }
+  .ids { font: .78rem var(--mono); color: var(--muted); }
+  .progress { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+  .progress > div { height: 100%; background: var(--accent); transition: width .2s; }
+  .tag { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .item-id { font: .85rem var(--mono); color: var(--muted); }
+  .policy { background: var(--policy); border-radius: 8px; padding: 12px; white-space: pre-wrap;
+    font-size: .88rem; max-height: 42vh; overflow-y: auto; margin-top: 6px; }
+  .qa { display: grid; gap: 4px; }
+  .qa p { margin-bottom: 10px; }
+  .crit { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 8px; flex-wrap: wrap; }
+  .crit.active { background: var(--focus); }
+  .crit .name { flex: 1; min-width: 200px; }
+  .crit button.on-yes { background: var(--yes); color: #fff; border-color: var(--yes); }
+  .crit button.on-no { background: var(--no); color: #fff; border-color: var(--no); }
+  .verdict { font-weight: 700; min-height: 1.5em; }
+  .verdict.pass { color: var(--yes); } .verdict.fail, .verdict.dropped { color: var(--no); }
+  .guide { white-space: pre-wrap; font-size: .9rem; max-height: 55vh; overflow-y: auto; margin-top: 8px; }
+  details summary { cursor: pointer; font-weight: 600; }
+  kbd { font: .78rem var(--mono); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; }
+  .status { font-weight: 600; min-height: 1.4em; }
+  .status.ok { color: var(--yes); } .status.err { color: var(--no); }
+  @media (prefers-reduced-motion: reduce) { .progress > div { transition: none; } }
+</style>
+
+<main>
+  <section id="start" class="stack">
+    <div>
+      <h1>Corvina Airways answer labelling</h1>
+      <p class="muted">You'll judge answers to customer questions about a fictional airline's policy. Judge each answer only against the policy text shown, and don't discuss items with the other labellers until everyone is done.</p>
+    </div>
+    <details class="panel" open><summary>Labelling guide: read this first (5 min)</summary><div class="guide" id="guideStart"></div></details>
+    <div class="panel stack">
+      <div id="slotBox">
+        <span class="field-label">Which labeller are you?</span>
+        <div class="slots" id="slots"></div>
+      </div>
+      <div>
+        <label class="field-label" for="name">Your first name</label>
+        <input id="name" type="text" placeholder="e.g. yasmine" autocomplete="off">
+      </div>
+      <div class="row"><button class="primary" id="go">Start labelling</button><span class="status err" id="startMsg"></span></div>
+      <p class="muted">Your progress is kept in this browser, so you can close the page and come back on the same device.</p>
+    </div>
+  </section>
+
+  <section id="work" class="stack" hidden>
+    <div class="stack" style="gap:8px">
+      <div class="row">
+        <b id="who"></b><span class="muted" id="count"></span><span class="grow"></span>
+        <button id="prev">&larr; Prev</button><button id="next">Next &rarr;</button>
+        <button id="guideBtn">Guide</button><button class="primary" id="finishBtn">Send my labels</button>
+      </div>
+      <div class="progress"><div id="bar"></div></div>
+    </div>
+
+    <div class="panel" id="guideWork" hidden><div class="guide" id="guideText"></div></div>
+
+    <div class="panel stack" id="finish" hidden>
+      <p><b id="finishTitle"></b></p>
+      <p class="muted">Copy your labels and paste them into a message to the person who sent you this page. That's all they need.</p>
+      <div class="row">
+        <button class="primary" id="copyBtn">Copy my labels</button>
+        <button id="saveBtn">Save as a file</button>
+        <span class="status" id="finishMsg"></span>
+      </div>
+      <textarea id="exportText" readonly hidden aria-label="Your labels"></textarea>
+    </div>
+
+    <div class="panel">
+      <div class="item-id" id="itemId"></div>
+      <div class="tag" style="margin-top:8px">Policy</div>
+      <div class="policy" id="policy"></div>
+    </div>
+    <div class="panel qa">
+      <div class="tag">Question</div><p id="question"></p>
+      <div class="tag">Answer</div><p id="answer"></p>
+    </div>
+    <div class="panel stack">
+      <div id="crits"></div>
+      <div class="verdict" id="verdict"></div>
+      <input id="note" type="text" placeholder="Note (optional)">
+      <div class="row" id="dropRow" hidden>
+        <input id="dropReason" type="text" placeholder="Why drop this item? (required)" class="grow" style="width:auto">
+        <button id="dropConfirm">Drop item</button><button id="dropCancel">Cancel</button>
+      </div>
+      <div class="row">
+        <button class="primary" id="save">Save &amp; next</button>
+        <button id="drop">Drop item&hellip;</button><span class="grow"></span>
+      </div>
+      <p class="muted">Keys: <kbd>y</kbd>/<kbd>n</kbd> answer the highlighted check, <kbd>Backspace</kbd> undo,
+        <kbd>Enter</kbd> save &amp; next, <kbd>d</kbd> drop, <kbd>&larr;</kbd>/<kbd>&rarr;</kbd> move.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+const DATA = {"pageId": "golden100-4", "items": [{"id": "q001", "sections": ["S09"], "question": "I have a Flex return ticket and I missed my outbound flight. Can I still use my return flight?", "answer": "Great question - missing a flight is stressful, but there is good news. Yes, with a Flex fare your remaining flights are kept, so your return flight stays valid. We hope this helps, and we look forward to welcoming you on board for your return. Have a wonderful journey!"}, {"id": "q002", "sections": ["S07"], "question": "My flight was cancelled and the next Corvina flight with free seats departs 30 hours after my original flight. Can I fly with another airline?", "answer": "Yes. Because the next available Corvina flight departs more than 24 hours after your original departure, you can request rebooking on a partner airline."}, {"id": "q003", "sections": ["S13"], "question": "The liability limit is EUR 1,500 per bag, right? I had two bags lost.", "answer": "No, the EUR 1,500 limit is per passenger, covering lost, damaged and delayed baggage combined - not per bag. A bag covered by a special declaration at check-in has a limit of EUR 3,000."}, {"id": "q004", "sections": ["S14", "S15"], "question": "Do Gold members get free seat selection?", "answer": "Great question - seat choice matters on any trip. Gold members get free standard seat selection. Extra legroom seats are still charged, at EUR 25, EUR 35 or EUR 50 per flight depending on the distance. We hope this helps, and we look forward to welcoming you on board soon. Have a wonderful journey!"}, {"id": "q005", "sections": ["S10"], "question": "My dog weighs 6 kg and its carrier weighs 3 kg. Can it travel with me in the cabin on a short-haul flight?", "answer": "Yes, dogs are allowed in the cabin on short-haul flights, for a fee of EUR 55 per flight."}, {"id": "q006", "sections": ["S10"], "question": "Does my trained guide dog have to pay a fee?", "answer": "Thank you for reaching out to us. We completely understand how important it is for you to travel with your guide dog. Trained assistance dogs travel free of charge in the cabin on all flights, including long-haul, as long as you submit the documentation at least 48 hours before departure. If you have any other questions, don't hesitate to ask. Wishing you a smooth and pleasant trip!"}, {"id": "q007", "sections": ["S03"], "question": "How heavy can a Business class cabin bag be?", "answer": "Up to 9 kg, the same as all other cabin bags."}, {"id": "q008", "sections": ["S03"], "question": "Can I bring a personal item on a Light fare?", "answer": "Yes, one personal item of up to 40 x 30 x 15 cm that fits under the seat. Light passengers may also bring a small duty-free bag of up to 3 kg in addition."}, {"id": "q009", "sections": ["S03"], "question": "I'm on a Light fare and I showed up at the gate with a cabin bag that I didn't pay for. What happens?", "answer": "Great question - this is something many travellers wonder about before their trip. Since Light fares do not include a cabin bag, your bag will have to go in the hold, and you will pay a fee of EUR 60 at the gate. We always want your travel experience to be as easy as possible. Safe travels!"}, {"id": "q010", "sections": ["S14"], "question": "How many points do I earn on a Classic ticket with a base fare of EUR 150 plus EUR 40 in taxes?", "answer": "Thanks for your question! Earning points is a great way to get more from your travels. Classic tickets earn 8 points per EUR, so on your EUR 190 ticket you earn 1,520 points. We hope this helps, and we look forward to welcoming you on board soon. Have a wonderful journey!"}, {"id": "q011", "sections": ["S01", "S06"], "question": "My short-haul flight arrived 3.5 hours late because of a technical fault. How much compensation do I get?", "answer": "Thanks for your question! Delays are frustrating, and we're sorry for the inconvenience. Because a technical fault is within Corvina's control and your flight arrived more than 3 hours late, you are entitled to EUR 250 in compensation for a short-haul flight. You can claim it through the online form. We always want your travel experience to be as easy as possible. Safe travels!"}, {"id": "q012", "sections": ["S09"], "question": "Who can use priority check-in?", "answer": "Business passengers and Corvina Club Silver and Gold members."}, {"id": "q013", "sections": ["S11"], "question": "Does my CPAP machine count toward my baggage allowance?", "answer": "No, CPAP machines are medical devices, so they are carried free and don't count toward your allowance."}, {"id": "q014", "sections": ["S14"], "question": "I want to cancel my award ticket 3 days before departure. What happens to my points?", "answer": "Because you are cancelling more than 24 hours before departure, your points are redeposited for a fee of EUR 30, and the taxes you paid are refunded."}, {"id": "q015", "sections": ["S03"], "question": "Can I bring breast milk in my cabin bag?", "answer": "The Corvina policy doesn't cover carrying breast milk, so I can't give you an answer from the handbook. I'd recommend contacting Corvina Airways and checking airport security rules before you travel."}, {"id": "q016", "sections": ["S03"], "question": "Can I bring my e-cigarette on the plane?", "answer": "Yes, e-cigarettes are allowed in your cabin baggage, but you may not use them during the flight."}, {"id": "q017", "sections": ["S02"], "question": "Can I pay for my ticket in cash at the Corvina desk at the airport?", "answer": "The handbook doesn't describe payment methods at the airport, so I can't confirm whether cash is accepted. Please check with Corvina Airways directly."}, {"id": "q018", "sections": ["S15"], "question": "I'm on a Flex fare. Do I have to pay for an extra legroom seat?", "answer": "Yes. Flex includes free standard seat selection, but extra legroom seats are charged: EUR 25 short-haul, EUR 35 medium-haul or EUR 50 long-haul, per flight."}, {"id": "q019", "sections": ["S06"], "question": "What are my payment options for delay compensation?", "answer": "Compensation is paid by bank transfer within 30 days."}, {"id": "q020", "sections": ["S06"], "question": "My flight arrived 2 hours late. How do I claim my EUR 200?", "answer": "You can claim the EUR 200 through the online form within 12 months of the flight date."}, {"id": "q021", "sections": ["S06"], "question": "My departure was delayed 6 hours because of a thunderstorm. Do I get compensation?", "answer": "No compensation, because severe weather is an extraordinary circumstance. You are still entitled to care (meal vouchers, and a hotel if an overnight stay is needed), and because the delay is 5 hours or more you may choose not to travel and get a full refund."}, {"id": "q022", "sections": ["S02", "S05"], "question": "Can I change the date of my flight on a Light ticket?", "answer": "Yes, you can change the date for a fee of EUR 45 plus any fare difference."}, {"id": "q023", "sections": ["S15"], "question": "I paid for an extra legroom seat, but Corvina moved me to a standard seat. Do I get a refund?", "answer": "Yes. Because Corvina moved you to a lower seat type, the seat fee is refunded."}, {"id": "q024", "sections": ["S12"], "question": "My 10-year-old is flying alone. Is the unaccompanied minor service required?", "answer": "Yes. It is mandatory for children aged 5 to 11 travelling without a passenger aged 16 or over, and it costs EUR 50 per direction."}, {"id": "q025", "sections": ["S02", "S04"], "question": "Flex includes three checked bags. What is the weight limit for each?", "answer": "Flex includes two checked bags, not three, each up to 27 kg. A third bag costs EUR 35 per flight if bought online at least 6 hours before departure, or EUR 70 at the airport."}, {"id": "q026", "sections": ["S07"], "question": "My medium-haul flight was cancelled 8 days before departure for technical reasons. The new flight departs 3 hours earlier than the original. Do I get compensation?", "answer": "Yes, EUR 350. With 7 to 13 days' notice, the alternative may depart at most 2 hours earlier, and yours departs 3 hours earlier."}, {"id": "q027", "sections": ["S05"], "question": "Does a Flex fare include travel insurance?", "answer": "Yes, Flex fares include basic travel insurance covering trip cancellation for medical reasons."}, {"id": "q028", "sections": ["S06"], "question": "Do I get a hotel if my delayed flight means staying overnight?", "answer": "Thanks for your question, and we're sorry your trip is not going as planned. Yes, Corvina provides hotel accommodation and transport between the airport and the hotel. Corvina also reimburses up to EUR 50 for phone calls and messages during the delay. We always want your travel experience to be as easy as possible. Safe travels!"}, {"id": "q029", "sections": ["S09"], "question": "When does online check-in open and close?", "answer": "Thank you for reaching out to us. We completely understand how important it is to plan ahead before a trip. Online check-in opens 36 hours before departure and closes 3 hours before departure. If you have any other questions, don't hesitate to ask. Wishing you a smooth and pleasant trip!"}, {"id": "q030", "sections": ["S09"], "question": "My medium-haul flight departs at 14:30. What is the latest time I can be at the gate?", "answer": "14:15, because the gate closes 15 minutes before departure."}, {"id": "q031", "sections": ["S04"], "question": "What is the standard size limit for a checked bag before oversize fees apply?", "answer": "The sum of the bag's length, width and height must not exceed 158 cm."}, {"id": "q032", "sections": ["S13"], "question": "My suitcase has a scratch after the flight. Can I claim for it?", "answer": "Yes, all damage is covered as long as you report it within 7 days of receiving the bag."}, {"id": "q033", "sections": ["S10"], "question": "Can I bring my Labrador in the hold on a flight from Tunis to Rome on 1 August?", "answer": "Yes. Dogs up to 45 kg including the crate can travel in the hold for EUR 120 per flight."}, {"id": "q034", "sections": ["S14"], "question": "How long does Silver status last once I earn it?", "answer": "Until the end of the following calendar year."}, {"id": "q035", "sections": ["S02"], "question": "How much does it cost to transfer my ticket to my brother?", "answer": "There is no transfer fee because Corvina tickets cannot be transferred to another person at all. Only small name corrections of up to 3 characters are allowed, free of charge, at least 24 hours before departure."}, {"id": "q036", "sections": ["S02"], "question": "What bags are included with a Light fare?", "answer": "A Light fare includes one personal item (max 40 x 30 x 15 cm) and a small cabin bag of up to 5 kg. No checked bag is included."}, {"id": "q037", "sections": ["S02"], "question": "Can I upgrade from Classic to Flex after booking?", "answer": "Yes, you can upgrade by paying the fare difference."}, {"id": "q038", "sections": ["S12"], "question": "An adult Classic fare costs EUR 200. How much will my 8-year-old pay?", "answer": "EUR 160, which is 80% of the adult fare."}, {"id": "q039", "sections": ["S05"], "question": "My unused Light ticket had EUR 12 in taxes. How much will I get back?", "answer": "You will get the EUR 12 in taxes back, since taxes are always refundable."}, {"id": "q040", "sections": ["S09", "S14"], "question": "I'm a Gold member. Can I check in online 48 hours before my flight?", "answer": "Yes. For Gold members, online check-in opens 72 hours before departure instead of the usual 36 hours."}, {"id": "q041", "sections": ["S04"], "question": "What can I check in for my baby for free?", "answer": "Great question - this is something many parents wonder about before their trip. Infants get one checked bag of up to 10 kg plus one foldable stroller, free of charge. We hope this helps you plan your trip, and we look forward to welcoming you and your little one on board soon. Have a wonderful journey!"}, {"id": "q042", "sections": ["S06"], "question": "My long-haul departure is delayed by 3 hours. Am I entitled to meal vouchers?", "answer": "Yes, meal vouchers are given from 2 hours of delay."}, {"id": "q043", "sections": ["S07"], "question": "My flight was cancelled and the next Corvina flight is 10 hours later. Can I ask to be put on a partner airline instead?", "answer": "Yes, you can always choose to be rebooked on a partner airline when Corvina cancels your flight."}, {"id": "q044", "sections": ["S07"], "question": "My long-haul flight was cancelled 3 days before departure. The alternative flight arrives 3 hours later than planned. Do I get compensation?", "answer": "No, as long as the new flight arrives no more than 4 hours after the original one."}, {"id": "q045", "sections": ["S12"], "question": "Can I reserve a bassinet for my baby?", "answer": "Yes, bassinets are free on long-haul flights for infants under 11 kg. Request one when you book."}, {"id": "q046", "sections": ["S02", "S03"], "question": "Since Business class lets you bring two cabin bags, what is the weight limit for each one?", "answer": "Each Business class cabin bag can weigh up to 12 kg."}, {"id": "q047", "sections": ["S13"], "question": "My bag was delayed by 4 days while I was on holiday abroad. How much can I claim for essential items?", "answer": "Up to EUR 40 per day, so up to EUR 160 in total, on presentation of receipts."}, {"id": "q048", "sections": ["S01"], "question": "At what age is a passenger counted as an adult?", "answer": "Thanks for your question! Age rules can feel confusing, so here is a clear answer. Corvina counts passengers aged 12 and over as adults, based on their age on the date of travel. Children are 2 to 11 years old, and infants are under 2. We hope this helps you plan your trip, and we look forward to welcoming you on board soon. Have a wonderful journey!"}, {"id": "q049", "sections": ["S02"], "question": "Does Corvina have Wi-Fi on board?", "answer": "The Corvina Airways policy handbook doesn't say anything about on-board Wi-Fi, so I can't confirm whether it's available. I'd recommend checking with Corvina Airways directly."}, {"id": "q050", "sections": ["S05"], "question": "Can I change my Flex ticket for free?", "answer": "Yes, Flex tickets can be changed for free."}, {"id": "q051", "sections": ["S01", "S06"], "question": "My flight had a CV flight number but was operated by a partner airline, and it arrived 4 hours late. Does Corvina pay delay compensation?", "answer": "Yes. Because it had a CV flight number, Corvina pays its standard delay compensation of EUR 200 to EUR 500 depending on the distance."}, {"id": "q052", "sections": ["S07"], "question": "My flight was cancelled. Will Corvina pay for a taxi to a different airport so I can catch another flight?", "answer": "Yes, Corvina reimburses taxi fares of up to EUR 100 to an alternative airport when your flight is cancelled."}, {"id": "q053", "sections": ["S07"], "question": "What choices do I have if Corvina cancels my flight?", "answer": "Thanks for your question, and we're sorry your plans have been disrupted. You can choose either a full refund, paid within 7 days, or free rebooking on the next available Corvina flight. If the next available Corvina flight departs more than 24 hours after your original departure, you can ask to be rebooked on a partner airline instead. While you wait, you receive care such as meal vouchers. We always want your travel experience to be as easy as possible. Safe travels!"}, {"id": "q054", "sections": ["S12"], "question": "My 13-year-old has to use the unaccompanied minor service, right? How much is it?", "answer": "Yes, it is mandatory at 13, and it costs EUR 70 per direction."}, {"id": "q055", "sections": ["S05"], "question": "I need to cancel my Classic ticket 12 hours before departure. How much do I get back?", "answer": "You will receive a refund of your ticket minus the EUR 90 refund fee."}, {"id": "q056", "sections": ["S10"], "question": "Since emotional support animals travel for free, how far in advance should I send the paperwork?", "answer": "Send the documentation at least 48 hours before departure."}, {"id": "q057", "sections": ["S02", "S15"], "question": "Since Light fares include free seat selection, how do I choose my seat?", "answer": "Light fares do not include free seat selection. You are assigned a seat free of charge at check-in, or you can pay to choose one - EUR 8 per flight for a standard seat."}, {"id": "q058", "sections": ["S04"], "question": "Is a stroller free for my 1-year-old?", "answer": "Yes, one foldable stroller is free. You can also check in a car seat and a travel cot for free."}, {"id": "q059", "sections": ["S09"], "question": "Online check-in closes 1 hour before departure, so if I check in online 90 minutes before my flight, I'm fine, right?", "answer": "Yes, 90 minutes before departure is within the online check-in window."}, {"id": "q060", "sections": ["S03"], "question": "Until when can I add a cabin bag online to a Light booking?", "answer": "Thank you for reaching out to us. We completely understand how important it is to have clear information before you fly. You can add a cabin bag online to your Light booking up to 6 hours before departure. If you have any other questions, don't hesitate to ask. Wishing you a smooth and pleasant trip!"}, {"id": "q061", "sections": ["S15"], "question": "How much does an extra legroom seat cost on a long-haul flight?", "answer": "EUR 35 per flight."}, {"id": "q062", "sections": ["S12"], "question": "Infants fly free on Corvina, right?", "answer": "No. An infant on an adult's lap pays 10% of the adult fare plus taxes."}, {"id": "q063", "sections": ["S04"], "question": "What are the rules for travelling with a hunting rifle?", "answer": "The Corvina handbook doesn't include any rules about firearms or hunting weapons, so I can't answer this from the policy. You should contact Corvina Airways directly before travelling."}, {"id": "q064", "sections": ["S01"], "question": "Do I need a visa to fly from Tunis to Paris with Corvina?", "answer": "The policy doesn't cover visa or entry requirements, so I can't answer that from it. You should check the entry rules for your destination with the relevant embassy or authority."}, {"id": "q065", "sections": ["S04"], "question": "My bag weighs 25 kg but its dimensions add up to 170 cm. Is there a fee?", "answer": "Yes, an oversize fee of EUR 75 per flight, because it is over 158 cm but not over 203 cm."}, {"id": "q066", "sections": ["S11"], "question": "If I need special assistance, can a companion fly with me for free?", "answer": "Yes, Corvina offers a 50% discount on a companion ticket for passengers who need special assistance."}, {"id": "q067", "sections": ["S11"], "question": "My wheelchair has a 350 Wh lithium-ion battery. Will it be accepted?", "answer": "Yes, as long as you notify Corvina at least 48 hours before departure."}, {"id": "q068", "sections": ["S01", "S06"], "question": "My medium-haul flight arrived 2 hours 50 minutes late because of a technical problem. How much compensation do I get?", "answer": "None. Compensation starts at an arrival delay of 3 hours, and 2 hours 50 minutes is below that."}, {"id": "q069", "sections": ["S01"], "question": "Which airline's baggage rules apply on a Corvina codeshare flight that is operated by a partner airline?", "answer": "The operating partner airline's rules apply to baggage, and also to delays, cancellations and denied boarding. Corvina's change and refund rules still apply if you bought the ticket from Corvina."}, {"id": "q070", "sections": ["S13"], "question": "My bag didn't arrive. What should I do at the airport?", "answer": "Report it before leaving the baggage reclaim area by filing a Property Irregularity Report. If that isn't possible, report it online within 48 hours of arrival."}, {"id": "q071", "sections": ["S14"], "question": "Can I buy points to reach Gold status faster?", "answer": "Yes, you can buy up to 10,000 points per year, and bought points count towards Gold status."}, {"id": "q072", "sections": ["S02", "S10"], "question": "I'm on a Light fare. Can I bring my cat in the cabin, and do I still get to bring my personal item?", "answer": "Yes. On a Light fare the pet carrier is allowed in addition to your personal item. The EUR 55 per-flight pet fee applies, and pets in the cabin are only accepted on short- and medium-haul flights."}, {"id": "q073", "sections": ["S04"], "question": "I'm a Corvina Club Gold member flying on a Light fare. Do I get any free checked bag?", "answer": "Yes, Gold members get one additional checked bag of up to 32 kg on all fare families, including Light."}, {"id": "q074", "sections": ["S06"], "question": "How long do I have to submit a delay compensation claim?", "answer": "Thank you for reaching out to us. We completely understand how frustrating a delay can be. You can submit your claim through the online form within 12 months of the flight date. If you have any other questions, don't hesitate to ask. Wishing you a smooth and pleasant trip!"}, {"id": "q075", "sections": ["S08"], "question": "I was downgraded on a short-haul flight whose ticket cost EUR 300. How much is refunded?", "answer": "50% of the ticket price, so EUR 150."}, {"id": "q076", "sections": ["S04"], "question": "My checked bag weighs 30 kg and I'm on a Classic fare. What will I pay?", "answer": "An overweight fee of EUR 50 per flight, because the bag is over the 27 kg allowance but not over 32 kg."}, {"id": "q077", "sections": ["S09"], "question": "Can I still check in online 2 hours before my flight?", "answer": "Thanks for your question! Timing can be tricky on travel day, so here is a clear answer. No - online check-in closes 3 hours before departure. You would need to check in at the airport, where check-in closes 60 minutes before departure for short- and medium-haul flights and 75 minutes before for long-haul flights. We always want your travel experience to be as easy as possible. Safe travels!"}, {"id": "q078", "sections": ["S13"], "question": "Corvina covers jewellery in checked bags up to EUR 1,500. How do I claim for my lost necklace?", "answer": "File a lost bag claim, and you will be reimbursed up to EUR 1,500."}, {"id": "q079", "sections": ["S09"], "question": "I have a Classic return ticket and I missed my outbound flight. Is my return flight still valid?", "answer": "No. For Light and Classic fares, a no-show on any flight cancels all remaining flights on the booking, including your return."}, {"id": "q080", "sections": ["S12"], "question": "Does Corvina offer a student discount?", "answer": "The policy handbook doesn't mention any student discount. The only age-based fares it describes are for infants and children under 12, so I can't confirm a student discount - please check with Corvina directly."}, {"id": "q081", "sections": ["S06"], "question": "An air traffic control strike delayed my flight by 5 hours. Can I claim compensation?", "answer": "Yes. Strikes always entitle you to compensation of EUR 200 to EUR 500, depending on the distance."}, {"id": "q082", "sections": ["S05"], "question": "Can I get a refund on my Classic ticket because I'm sick?", "answer": "Yes. If you provide a medical certificate, Corvina waives the EUR 90 refund fee on Classic tickets."}, {"id": "q083", "sections": ["S05"], "question": "I changed my Flex flight to a cheaper date. Do I get the difference back?", "answer": "No. Flex changes are free, but when the new fare is lower than the original, the difference is not refunded."}, {"id": "q084", "sections": ["S13"], "question": "Can I claim for toiletries I buy while my bag is delayed?", "answer": "Yes, you can claim up to EUR 40 per day for up to 5 days."}, {"id": "q085", "sections": ["S10"], "question": "How far in advance do I need to book my pet's travel?", "answer": "You need to book at least 24 hours before departure, through the website."}, {"id": "q086", "sections": ["S01", "S10"], "question": "Can my cat travel with me in the cabin on my long-haul flight to Montreal?", "answer": "No. Pets are not accepted in the cabin on long-haul flights. Your cat could travel in the hold instead (up to 45 kg including the crate, EUR 120 per flight), unless it is a flat-faced breed such as a Persian, or the flight is to or from Tunis between 15 June and 15 September."}, {"id": "q087", "sections": ["S04"], "question": "Can I travel with my father's ashes in an urn?", "answer": "The policy doesn't cover travelling with cremated remains, so I can't answer this from the handbook. Please contact Corvina Airways before your flight so they can advise you."}, {"id": "q088", "sections": ["S14"], "question": "What benefits do Gold members get?", "answer": "Priority check-in, priority boarding and lounge access."}, {"id": "q089", "sections": ["S06"], "question": "My medium-haul flight arrived 4 hours late. How much compensation do I get?", "answer": "EUR 350."}, {"id": "q090", "sections": ["S06", "S12"], "question": "What is the minimum connection time when I change planes in Tunis?", "answer": "The minimum connection time in Tunis is 2 hours."}, {"id": "q091", "sections": ["S04"], "question": "How much does an extra checked bag cost if I buy it online, and how much at the airport?", "answer": "EUR 35 per bag per flight online (if bought at least 6 hours before departure) and EUR 70 per bag per flight at the airport."}, {"id": "q092", "sections": ["S06"], "question": "Is a bird strike considered an extraordinary circumstance?", "answer": "Great question - this is something many travellers wonder about. Yes, a bird strike is listed as an extraordinary circumstance, so it does not give a right to delay compensation. However, Corvina still provides care, such as meal vouchers and a hotel if an overnight stay is needed. We hope this helps, and we look forward to welcoming you on board soon. Have a wonderful journey!"}, {"id": "q093", "sections": ["S14"], "question": "I'm a Silver member and I bought a Business ticket with a base fare of EUR 1,000. How many points do I earn?", "answer": "15,000 base points (15 per EUR), plus the 25% Silver bonus, for a total of 18,750 points."}, {"id": "q094", "sections": ["S07"], "question": "Corvina cancelled my flight and told me 20 days before departure. Do I get compensation?", "answer": "No compensation, because you were notified at least 14 days before departure. You can still choose a full refund or free rebooking."}, {"id": "q095", "sections": ["S10"], "question": "On a Classic fare, can I bring both my cabin bag and my dog's carrier into the cabin?", "answer": "Yes, you can bring your cabin bag, your pet carrier and your personal item."}, {"id": "q096", "sections": ["S05"], "question": "Two of us want to change both directions of our Classic return trip. What is the total change fee, not counting any fare difference?", "answer": "Thank you for reaching out to us. We completely understand how important flexibility is when plans change. The Classic change fee is EUR 45 per passenger per direction, so for 2 passengers and 2 directions the total is EUR 180, plus any fare difference. If you have any other questions, don't hesitate to ask. Wishing you a smooth and pleasant trip!"}, {"id": "q097", "sections": ["S01", "S06"], "question": "My 2,800 km flight arrived 4 hours late because of a strike by Corvina's pilots. How much compensation do I get?", "answer": "EUR 350. The flight is medium-haul, and a strike by Corvina's own staff is within its control, so compensation is due."}, {"id": "q098", "sections": ["S05"], "question": "Flex refunds come with a EUR 90 fee. Is there any way to avoid it?", "answer": "There is no EUR 90 fee on Flex - that fee applies to Classic. Flex tickets are fully refundable up to 2 hours before departure; after that, or if you don't show up, the refund is reduced by EUR 50."}, {"id": "q099", "sections": ["S14"], "question": "Can I transfer my Corvina Club points to my wife's account?", "answer": "The policy doesn't say whether points can be transferred between members, so I can't confirm it. Please ask Corvina Club directly."}, {"id": "q100", "sections": ["S05"], "question": "Is a Flex ticket refundable if I cancel the day before my flight?", "answer": "Great question - this is something many travellers wonder about when their plans change. Yes, a Flex ticket is fully refundable up to 2 hours before departure, so cancelling the day before gets you a full refund. We hope this helps, and we look forward to welcoming you on board another time. Have a wonderful day!"}], "sections": {"S01": "## S01 Scope and definitions\n\n1. This handbook applies to all flights marketed and operated by Corvina Airways (flight numbers beginning with CV). Corvina Airways is based at Tunis-Carthage airport (TUN).\n2. On flights marketed by Corvina but operated by a partner airline (codeshare flights), the operating airline's rules apply to baggage, delays, cancellations and denied boarding. Corvina's rules on changes and refunds (Section S05) still apply to tickets purchased from Corvina.\n3. Flight distance bands:\n   - Short-haul: under 1,500 km.\n   - Medium-haul: from 1,500 km to 3,500 km.\n   - Long-haul: more than 3,500 km.\n4. Arrival delay is measured as the difference between the scheduled arrival time and the time the aircraft door is opened at the destination gate.\n5. \"Departure\" means the scheduled departure time printed on the booking confirmation.\n6. Fare families: Light, Classic and Flex (economy cabin), and Business.\n7. Age categories, on the date of travel: infant (under 2 years), child (2 to 11 years), adult (12 years and over).", "S02": "## S02 Fare families and booking\n\n1. Light: one personal item only. No cabin bag and no checked bag are included. No changes are allowed and the fare is not refundable (see S05 for taxes). A seat is assigned free of charge at check-in; seat selection can be purchased (S15).\n2. Classic: one personal item, one cabin bag and one checked bag of up to 27 kg. Changes and refunds are allowed for a fee (S05).\n3. Flex: one personal item, one cabin bag and two checked bags of up to 27 kg each. Free standard seat selection. Free changes and full refunds (S05).\n4. Business: one personal item, one cabin bag of up to 12 kg and two checked bags of up to 32 kg each. All seats free. Lounge access. Free changes and full refunds (S05).\n5. 24-hour free cancellation: a booking made at least 7 days before departure may be cancelled free of charge for a full refund within 24 hours of purchase, on all fare families. This does not apply to bookings made less than 7 days before departure.\n6. Name corrections: a correction of up to 3 characters in a passenger's name is free if requested at least 24 hours before departure. Tickets cannot be transferred to another person.\n7. Upgrading: a passenger may move to a higher fare family by paying the fare difference at the time of the upgrade, up to 3 hours before departure.\n8. Downgrading: moving to a lower fare family is treated as a change under S05. Any fare difference is not refunded.", "S03": "## S03 Cabin baggage\n\n1. Personal item: maximum 40 x 30 x 15 cm and must fit under the seat in front. All passengers, including Light, may bring one personal item.\n2. Cabin bag: maximum 55 x 35 x 20 cm and 9 kg (Business: 12 kg). Included in Classic, Flex and Business.\n3. Light passengers may add a cabin bag online for EUR 20 per flight, up to 6 hours before departure.\n4. A Light passenger who presents a cabin bag at the gate without having purchased one must have it placed in the hold, for a fee of EUR 60 payable at the gate.\n5. If overhead space runs out, cabin bags of Classic, Flex and Business passengers may be placed in the hold at the gate at no charge.", "S04": "## S04 Checked baggage\n\n1. Checked baggage allowance depends on the fare family (S02). The weight limit per bag is 27 kg (Business: 32 kg).\n2. Standard size limit: the sum of length, width and height must not exceed 158 cm.\n3. Extra checked bag (up to 27 kg): EUR 35 per bag per flight when purchased online at least 6 hours before departure; EUR 70 per bag per flight when purchased at the airport.\n4. Overweight: a bag heavier than its allowance weight, up to 32 kg, costs EUR 50 per bag per flight. Bags heavier than 32 kg are not accepted as checked baggage on any fare family and must be sent as cargo.\n5. Oversize: a bag whose dimensions total more than 158 cm and up to 203 cm costs EUR 75 per bag per flight. Bags over 203 cm are not accepted.\n6. Overweight and oversize fees are cumulative.\n7. Sports equipment: bicycles, golf bags and ski equipment count as one standard checked bag provided they are within the weight limit; the 158 cm size limit does not apply to them. Surfboards and kitesurf boards always cost EUR 80 per flight, regardless of the passenger's allowance.\n8. Infants: one checked bag of up to 10 kg plus one foldable stroller, free of charge.\n9. Corvina Club Gold members receive one additional checked bag of up to 27 kg on all fare families, including Light.\n10. Mobility devices are covered in S11 and do not count towards the allowance.", "S05": "## S05 Voluntary changes and refunds\n\n1. Light: no changes and no refund. Unused government taxes and airport charges may be refunded on request within 6 months of the scheduled departure date of the unused flight. A processing fee of EUR 15 is deducted; if the refundable taxes are EUR 15 or less, no refund is paid.\n2. Classic changes: allowed up to 3 hours before departure, for a fee of EUR 45 per passenger per direction, plus any fare difference.\n3. Classic refunds: allowed if requested at least 24 hours before departure, with a fee of EUR 90 per passenger deducted. After that, only taxes are refundable, under the same conditions as Light.\n4. Flex: free changes up to 2 hours before departure (fare difference applies). Full refund up to 2 hours before departure. After that, or in case of no-show, the refund is reduced by EUR 50.\n5. Business: free changes and a full refund up to the scheduled departure time. In case of no-show, the refund is reduced by EUR 100.\n6. On all fare families, if the new fare is lower than the original fare, the difference is not refunded.\n7. Refunds are paid to the original form of payment within 14 days. Alternatively, the passenger may choose a travel voucher worth 110% of the refund amount, valid for 12 months from issue and usable on Corvina-operated flights only.", "S06": "## S06 Delays\n\n1. Care: when the departure delay is expected to reach 2 hours or more (short-haul), 3 hours or more (medium-haul) or 4 hours or more (long-haul), Corvina provides meal vouchers worth EUR 15 per passenger.\n2. If the delay requires an overnight stay, Corvina provides hotel accommodation and transport between the airport and the hotel.\n3. Compensation is paid for arrival delays caused by circumstances within Corvina's control:\n   - Short-haul, arrival delay of 3 hours or more: EUR 200.\n   - Medium-haul, arrival delay of 3 hours or more: EUR 350.\n   - Long-haul, arrival delay of 3 hours to less than 4 hours: EUR 250.\n   - Long-haul, arrival delay of 4 hours or more: EUR 500.\n4. Extraordinary circumstances - severe weather, air traffic control restrictions or strikes, security risks, political instability and bird strikes - do not give a right to compensation, but care (items 1 and 2) is still provided. Strikes by Corvina's own staff and technical faults are within Corvina's control.\n5. If the departure delay reaches 5 hours or more, the passenger may choose not to travel and receive a full refund of the unused ticket and, where relevant, a return flight to the first point of departure. If the passenger chooses not to travel, compensation under item 3 is not payable.\n6. For connecting flights on a single booking, the delay is measured at the final destination.\n7. Claims must be submitted through the online form within 12 months of the flight date. Compensation is paid by bank transfer within 30 days or, if the passenger prefers, as a travel voucher worth 130% of the amount, valid for 12 months.", "S07": "## S07 Cancellations by Corvina\n\n1. When Corvina cancels a flight, the passenger may choose a full refund, paid within 7 days, or free rebooking on the next available Corvina flight. If the next available Corvina flight departs more than 24 hours after the original departure, the passenger may request rebooking on a partner airline.\n2. Compensation is paid at the amounts for the distance band: short-haul EUR 200, medium-haul EUR 350, long-haul EUR 500, except in the following cases:\n   - The passenger was notified at least 14 days before departure.\n   - The passenger was notified 7 to 13 days before departure and the alternative flight departs no more than 2 hours earlier and arrives no more than 4 hours later than the original flight.\n   - The passenger was notified less than 7 days before departure and the alternative flight departs no more than 1 hour earlier and arrives no more than 2 hours later than the original flight.\n   - The cancellation was caused by extraordinary circumstances (S06).\n3. While waiting for an alternative flight, passengers receive care as described in S06.", "S08": "## S08 Denied boarding and downgrading\n\n1. When a flight is overbooked, Corvina first asks for volunteers to give up their seats in exchange for benefits agreed with each volunteer.\n2. Passengers denied boarding against their will receive compensation paid at the airport - short-haul EUR 300, medium-haul EUR 450, long-haul EUR 600 - plus the choice of a refund or rebooking (S07) and care (S06).\n3. It is not denied boarding if the passenger reached the gate after it closed (S09), did not present valid travel documents, or was refused for reasons of safety, health or behaviour.\n4. Downgrading: a passenger placed in a lower cabin than the one booked receives a refund of 30% (short-haul), 50% (medium-haul) or 75% (long-haul) of the ticket price for that flight, paid within 7 days.", "S09": "## S09 Check-in and boarding\n\n1. Online check-in opens 36 hours before departure and closes 3 hours before departure.\n2. Airport check-in and bag drop close 60 minutes before departure for short- and medium-haul flights, and 75 minutes before departure for long-haul flights.\n3. The boarding gate closes 25 minutes before departure for short- and medium-haul flights, and 40 minutes before departure for long-haul flights.\n4. A passenger who misses the check-in deadline or the gate closure is a no-show. For Light and Classic fares, a no-show on any flight cancels all remaining flights on the booking. For Flex and Business fares, the remaining flights are kept if the passenger informs Corvina within 24 hours of the missed departure.\n5. Priority check-in is available to Business passengers and to Corvina Club Silver and Gold members.", "S10": "## S10 Travelling with pets\n\n1. In the cabin: cats and dogs only. The combined weight of pet and carrier must not exceed 8 kg, the carrier must not exceed 45 x 30 x 25 cm and must stay under the seat for the whole flight, and the pet must be at least 12 weeks old. A maximum of 3 pets are accepted in the cabin per flight, with one carrier per passenger. Fee: EUR 55 per flight. Pets are not accepted in the cabin on long-haul flights.\n2. The pet carrier counts as the passenger's cabin bag. Light passengers, who have no cabin bag allowance, may bring the pet carrier in addition to their personal item. The pet fee applies in all cases.\n3. In the hold: cats and dogs up to 45 kg including the crate. Fee: EUR 120 per flight. Pets are not accepted in the hold between 15 June and 15 September (inclusive) on flights to or from Tunis-Carthage (TUN). Brachycephalic (flat-faced) breeds such as pugs, bulldogs (including French bulldogs) and Persian cats are never accepted in the hold.\n4. Pets must be booked by phone at least 48 hours before departure.\n5. Trained assistance dogs travel free of charge in the cabin on all flights, including long-haul, provided documentation is submitted at least 48 hours before departure. Emotional support animals are not treated as assistance animals; the pet rules above apply to them.", "S11": "## S11 Special assistance and medical conditions\n\n1. Special assistance (for example wheelchair assistance) is free of charge and should be requested at least 48 hours before departure. Requests made later will be handled where possible but cannot be guaranteed.\n2. Up to 2 mobility devices per passenger are carried free of charge in the hold and do not count towards the baggage allowance.\n3. Battery-powered wheelchairs must be notified at least 48 hours before departure. Lithium-ion batteries must not exceed 300 Wh.\n4. Personal oxygen concentrators are permitted with Corvina's approval. The approval form must be submitted at least 72 hours before departure, and the passenger must carry batteries sufficient for 150% of the scheduled flight duration.\n5. Pregnancy:\n   - Up to the end of week 28: no restriction.\n   - Single pregnancy, from week 29 to the end of week 35: a medical certificate issued no more than 7 days before departure is required. Not accepted from week 36.\n   - Multiple pregnancy, from week 29 to the end of week 31: a medical certificate issued no more than 7 days before departure is required. Not accepted from week 32.", "S12": "## S12 Children and unaccompanied minors\n\n1. An infant travels on an adult's lap and pays 10% of the adult fare plus taxes. Each adult may travel with only one lap infant; a second infant must have their own seat at the child fare.\n2. Children (2 to 11) pay 80% of the adult fare on Classic, Flex and Business, and the full adult fare on Light.\n3. Unaccompanied minor (UM) service: mandatory for children aged 5 to 11 travelling without a passenger aged 16 or over; optional for children aged 12 to 15. Fee: EUR 70 per direction.\n4. Children under 5 cannot travel without a passenger aged 16 or over.\n5. On connecting itineraries, the UM service is available only when the connection is at Tunis-Carthage (TUN) with a connection time of at least 2 hours.", "S13": "## S13 Delayed, lost and damaged baggage\n\n1. A delayed or missing bag must be reported before leaving the baggage reclaim area by filing a Property Irregularity Report (PIR). If that is not possible, it must be reported online within 24 hours of arrival.\n2. Interim expenses for essential items while a bag is delayed are reimbursed up to EUR 40 per day for a maximum of 5 days, on presentation of receipts. Interim expenses are not payable when the flight arrived at the passenger's place of residence.\n3. Claims for interim expenses must be submitted within 21 days after the bag is delivered.\n4. Damage must be reported within 7 days of receiving the bag. Minor damage from normal handling (scratches, scuffs, small dents and small tears) is not covered. Damage to wheels, handles and straps is covered only if the bag becomes unusable.\n5. A bag not found within 21 days after the flight's arrival is considered lost, and a lost bag claim can then be made.\n6. Corvina's liability is limited to EUR 1,500 per passenger for lost, damaged and delayed baggage combined. A special declaration of higher value made at check-in, for a fee of EUR 25 per bag, raises the limit for that bag to EUR 3,000.\n7. Corvina is not liable for fragile items, cash, jewellery, electronics, medicines or important documents packed in checked baggage, unless they were covered by a special declaration.", "S14": "## S14 Corvina Club loyalty programme\n\n1. Tiers: Blue (entry level), Silver (30,000 points earned in a calendar year) and Gold (70,000 points earned in a calendar year). Silver and Gold status is valid until the end of the following calendar year.\n2. Earning: points per EUR of base fare, excluding taxes and charges - Light 4, Classic 8, Flex 10, Business 15. Silver members earn 25% bonus points and Gold members 50% bonus points on flights.\n3. Expiry: for Blue members, points expire 24 months after the month in which they were earned. Points do not expire while the member holds Silver or Gold status.\n4. Silver benefits: priority check-in, priority baggage handling, 25% bonus points.\n5. Gold benefits: priority check-in, priority boarding, priority baggage handling, one additional 27 kg checked bag (S04), lounge access for the member plus one guest on medium- and long-haul departures, free standard seat selection, 50% bonus points.\n6. Award tickets are paid in points, with taxes and charges paid in cash. Changing an award ticket costs EUR 25. If an award ticket is cancelled more than 24 hours before departure, the points are redeposited for a fee of EUR 30 and the taxes are refunded. If it is cancelled within 24 hours of departure or not used, the points are forfeited and only the taxes are refunded.", "S15": "## S15 Seats\n\n1. Standard seat selection costs EUR 8 per flight. It is free for Flex and Business passengers and for Corvina Club Gold members.\n2. Extra legroom seats cost EUR 25 (short-haul), EUR 35 (medium-haul) or EUR 50 (long-haul) per flight for all passengers in the economy cabin, including Flex passengers and Gold members.\n3. Passengers who do not select a seat are assigned one free of charge at check-in.\n4. Exit row seats are available only to passengers aged 16 or over who are able and willing to assist in an evacuation, who are not travelling with an infant or a pet in the cabin, and who have not requested special assistance.\n5. If Corvina moves a passenger from a paid seat to a seat of a lower type, the seat fee is refunded. If the passenger is moved to a seat of the same type, no refund is due.\n6. Children under 12 on the same booking as an adult are seated next to at least one accompanying adult free of charge, on all fare families including Light."}, "guide": "# Labelling Guide - Corvina Airways Policy QA (v1)\n\n## What you are labelling\n\nEach item shows **policy section(s)** from the Corvina Airways handbook, a **customer question**, and an **answer**. You decide whether the answer is good enough to send to the customer, **using only the policy text shown**. Do not use your own knowledge of real airlines: Corvina is fictional and its rules deliberately differ from real ones.\n\nYou answer three yes/no questions. The final verdict is computed automatically:\n\n> **PASS** only if all three are **yes**. Any **no** means **FAIL**.\n\n## The three criteria\n\n### 1. Correct - does everything the answer states agree with the policy?\n\n- **No** if any number, time limit, fee, percentage, age or weight is wrong, or if a calculation is wrong.\n- **No** if the answer applies the wrong rule or reaches the wrong conclusion (for example says \"yes\" when the policy says \"no\").\n- **No** if the question contains a false assumption and the answer goes along with it (for example: \"Since Light includes a checked bag, how heavy can it be?\" answered with a weight). A correct answer points out the false assumption.\n- Rule of thumb: if the policy says something **different** from the answer, that is a **Correct = no**.\n\n### 2. Complete - does the answer give the customer everything they need to act?\n\n- **No** if it leaves out a condition that changes the outcome (a deadline, an exception, a \"only if...\"). Example: \"Can I change my Flex ticket for free?\" -> \"Yes.\" is incomplete, because changes are free only up to 2 hours before departure, and any fare difference still applies.\n- **No** if it answers only part of a multi-part question.\n- **Yes** if the missing detail would not change what the customer does. Don't fail an answer for leaving out trivia.\n\n### 3. Grounded - is every claim supported by the policy?\n\n- **No** if the answer states a rule, fee, service or number that the policy **does not mention at all** (invented content), even if it sounds plausible or is true for real airlines.\n- **No** if the policy does not cover the question and the answer guesses instead of saying so.\n- Rule of thumb: if the policy says **nothing** about it and the answer asserts it, that is **Grounded = no**.\n\n## Special cases\n\n| Situation | How to label |\n|---|---|\n| The policy does not cover the question, and the answer says so clearly | All three **yes** (PASS). |\n| The answer suggests contacting Corvina, the airport or an embassy | Allowed. Generic advice like this is **not** an invented claim. |\n| Friendly padding (\"Great question!\", \"Have a nice trip!\") | **Ignore it.** Judge only the content. Padding is neither good nor bad. |\n| Extra correct information from the policy that wasn't asked for | Fine, as long as it is correct. |\n| Wrong number AND invented rule in the same answer | Mark **both** criteria no. Label each criterion independently. |\n| Question details are incomplete (for example the distance isn't stated) | Judge whether the answer is right for the situation described. If you genuinely cannot decide, **drop** the item. |\n\n## When to drop an item\n\nDrop (key `d`) and write a short reason if:\n\n- the policy itself is ambiguous, so two careful people could reasonably disagree about the right answer;\n- the question makes no sense or cannot be judged from the sections shown;\n- the item is broken (for example the wrong section is attached).\n\nDon't drop an item just because it is hard. Dropped items are reported, so the reason matters.\n\n## Worked examples (not in the golden set)\n\n**Q:** When does the boarding gate close for a long-haul flight? (S09)\n\n- \"40 minutes before departure.\" -> Correct **yes**, Complete **yes**, Grounded **yes** -> **PASS**\n- \"30 minutes before departure.\" -> Correct **no** -> **FAIL**\n\n**Q:** What is the checked baggage allowance on a Classic fare? (S02, S04)\n\n- \"One checked bag of up to 27 kg, and you also get free priority boarding.\" -> Grounded **no** (priority boarding is not a Classic benefit) -> **FAIL**\n\n**Q:** Can I bring my e-scooter? (S03, S04)\n\n- \"The policy doesn't cover e-scooters, so I can't confirm. Please check with Corvina.\" -> **PASS**\n- \"No, e-scooters are banned on all flights.\" -> Grounded **no** (a guess) -> **FAIL**\n\n**Q:** Since Classic includes two checked bags, can I bring two 27 kg bags? (S02)\n\n- \"Classic includes one checked bag of 27 kg, not two. A second bag costs EUR 35 per flight online or EUR 70 at the airport.\" -> **PASS**\n- \"Yes, two bags of 27 kg each.\" -> Correct **no** (accepts the false assumption) -> **FAIL**\n\n## Process rules\n\n1. **Label independently.** Do not discuss items with the other labellers, and do not look at anyone else's labels, until everyone has finished.\n2. **Do not open `data/golden/generation_meta.jsonl`** before labelling is finished. It contains notes on how each answer was built, and seeing it would contaminate your labels.\n3. Read the policy section in full for every item. The trap is often one clause.\n4. Label in the labelling page (`labelling/label_app.html`, also published as a link). Pick your labeller number (each person a different one), label with `y`/`n` and `Enter`, then click **Send my labels** and **Copy my labels**, and paste the result to the project owner, who imports it with `python -m scripts.import_labels`.\n5. Every item is labelled by exactly two people. Agreement is measured with `python -m scripts.agreement <name1> <name2> <name3> <name4>`.\n", "assignments": [["q001", "q002", "q003", "q004", "q005", "q006", "q007", "q008", "q009", "q010", "q011", "q012", "q013", "q014", "q015", "q016", "q017", "q018", "q019", "q020", "q021", "q022", "q023", "q024", "q025", "q026", "q027", "q028", "q029", "q030", "q031", "q032", "q033", "q034", "q035", "q036", "q037", "q038", "q039", "q040", "q041", "q042", "q043", "q044", "q045", "q046", "q047", "q048", "q049", "q050"], ["q026", "q027", "q028", "q029", "q030", "q031", "q032", "q033", "q034", "q035", "q036", "q037", "q038", "q039", "q040", "q041", "q042", "q043", "q044", "q045", "q046", "q047", "q048", "q049", "q050", "q051", "q052", "q053", "q054", "q055", "q056", "q057", "q058", "q059", "q060", "q061", "q062", "q063", "q064", "q065", "q066", "q067", "q068", "q069", "q070", "q071", "q072", "q073", "q074", "q075"], ["q051", "q052", "q053", "q054", "q055", "q056", "q057", "q058", "q059", "q060", "q061", "q062", "q063", "q064", "q065", "q066", "q067", "q068", "q069", "q070", "q071", "q072", "q073", "q074", "q075", "q076", "q077", "q078", "q079", "q080", "q081", "q082", "q083", "q084", "q085", "q086", "q087", "q088", "q089", "q090", "q091", "q092", "q093", "q094", "q095", "q096", "q097", "q098", "q099", "q100"], ["q076", "q077", "q078", "q079", "q080", "q081", "q082", "q083", "q084", "q085", "q086", "q087", "q088", "q089", "q090", "q091", "q092", "q093", "q094", "q095", "q096", "q097", "q098", "q099", "q100", "q001", "q002", "q003", "q004", "q005", "q006", "q007", "q008", "q009", "q010", "q011", "q012", "q013", "q014", "q015", "q016", "q017", "q018", "q019", "q020", "q021", "q022", "q023", "q024", "q025"]]};
+const CRITERIA = [
+  ["correct", "Correct: everything stated agrees with the policy?"],
+  ["complete", "Complete: nothing missing that changes the outcome?"],
+  ["grounded", "Grounded: no claims the policy doesn't support?"],
+];
+const $ = (id) => document.getElementById(id);
+const byId = Object.fromEntries(DATA.items.map((it) => [it.id, it]));
+let name = "", slot = 0, items = [], pos = 0, labels = {}, draft = [];
+
+function storageKey() { return `corvina-labels-v2:${DATA.pageId}:${slot}:${name}`; }
+function load() {
+  try { labels = JSON.parse(localStorage.getItem(storageKey()) || "{}"); } catch (e) { labels = {}; }
+}
+function persist() {
+  try { localStorage.setItem(storageKey(), JSON.stringify(labels)); } catch (e) { /* copying still works this visit */ }
+}
+function now() { return new Date().toISOString().slice(0, 19) + "+00:00"; }
+
+function buildStart() {
+  $("guideStart").textContent = DATA.guide;
+  $("guideText").textContent = DATA.guide;
+  if (!DATA.assignments) { $("slotBox").hidden = true; return; }
+  DATA.assignments.forEach((ids, i) => {
+    const label = document.createElement("label");
+    label.className = "slot";
+    const radio = document.createElement("input");
+    radio.type = "radio"; radio.name = "slot"; radio.value = String(i + 1); radio.id = "slot" + (i + 1);
+    const text = document.createElement("span");
+    const b = document.createElement("b"); b.textContent = `Labeller ${i + 1}`;
+    const s = document.createElement("span"); s.className = "ids"; s.textContent = `${ids.length} items`;
+    text.append(b, s); label.append(radio, text); $("slots").appendChild(label);
+  });
+}
+
+function start() {
+  name = $("name").value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
+  const picked = document.querySelector("input[name=slot]:checked");
+  if (DATA.assignments && !picked) { $("startMsg").textContent = "Pick your labeller number."; return; }
+  if (!name) { $("startMsg").textContent = "Type your first name."; $("name").focus(); return; }
+  slot = picked ? Number(picked.value) : 0;
+  const ids = DATA.assignments ? DATA.assignments[slot - 1] : DATA.items.map((it) => it.id);
+  items = ids.map((id) => byId[id]);
+  load();
+  const firstTodo = items.findIndex((it) => !labels[it.id]);
+  pos = firstTodo === -1 ? 0 : firstTodo;
+  $("start").hidden = true; $("work").hidden = false;
+  $("who").textContent = slot ? `${name} (labeller ${slot})` : name;
+  render();
+}
+
+function doneCount() { return items.filter((x) => labels[x.id]).length; }
+
+function render() {
+  // A new item always starts with the keyboard free: the cursor must not stay in
+  // the note or drop box, or the next y/n/Enter keys would be typed into it.
+  if (document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
+  const it = items[pos];
+  const done = doneCount();
+  $("count").textContent = `item ${pos + 1} of ${items.length}, ${done} labelled`;
+  $("bar").style.width = (100 * done / items.length) + "%";
+  $("itemId").textContent = it.id;
+  $("policy").textContent = it.sections.slice().sort().map((s) => DATA.sections[s]).join("\n\n");
+  $("policy").scrollTop = 0;
+  $("question").textContent = it.question;
+  $("answer").textContent = it.answer;
+  const saved = labels[it.id];
+  draft = saved && !saved.dropped ? CRITERIA.map(([k]) => saved[k]) : [];
+  $("note").value = saved ? (saved.note || "") : "";
+  $("dropRow").hidden = true; $("dropReason").value = "";
+  $("prev").disabled = pos === 0;
+  $("next").disabled = pos === items.length - 1;
+  renderForm(saved);
+  window.scrollTo(0, 0);
+}
+
+function renderForm(saved) {
+  $("crits").innerHTML = "";
+  CRITERIA.forEach(([key, text], i) => {
+    const row = document.createElement("div");
+    row.className = "crit" + (i === draft.length ? " active" : "");
+    const label = document.createElement("span");
+    label.className = "name"; label.textContent = text;
+    row.appendChild(label);
+    [["Yes", true], ["No", false]].forEach(([t, v]) => {
+      const b = document.createElement("button");
+      b.textContent = t;
+      if (draft[i] === v) b.className = v ? "on-yes" : "on-no";
+      b.onclick = () => { if (i <= draft.length) { draft = draft.slice(0, i); draft[i] = v; renderForm(); } };
+      row.appendChild(b);
+    });
+    $("crits").appendChild(row);
+  });
+  const v = $("verdict");
+  if (saved && saved.dropped && draft.length === 0) {
+    v.className = "verdict dropped"; v.textContent = "Dropped: " + saved.drop_reason;
+  } else if (draft.length === 3) {
+    const pass = draft.every(Boolean);
+    v.className = "verdict " + (pass ? "pass" : "fail"); v.textContent = pass ? "PASS" : "FAIL";
+  } else { v.className = "verdict"; v.textContent = ""; }
+  $("save").disabled = draft.length !== 3;
+}
+
+function answer(v) { if (draft.length < 3) { draft.push(v); renderForm(); } }
+
+function record(row) {
+  labels[items[pos].id] = row; persist();
+  if (!$("finish").hidden) refreshFinish();
+  advance();
+}
+
+function save() {
+  if (draft.length !== 3) return;
+  const row = { id: items[pos].id, labeller: name, dropped: false };
+  CRITERIA.forEach(([k], i) => { row[k] = draft[i]; });
+  row.verdict = draft.every(Boolean) ? "pass" : "fail";
+  row.note = $("note").value.trim();
+  row.labelled_at = now();
+  record(row);
+}
+
+function openDrop() { $("dropRow").hidden = false; $("dropReason").focus(); }
+function confirmDrop() {
+  const reason = $("dropReason").value.trim();
+  if (!reason) { $("dropReason").focus(); return; }
+  record({ id: items[pos].id, labeller: name, dropped: true, drop_reason: reason, labelled_at: now() });
+}
+
+function advance() {
+  const nextTodo = items.findIndex((x, i) => i > pos && !labels[x.id]);
+  const anyTodo = items.findIndex((x) => !labels[x.id]);
+  if (nextTodo !== -1) pos = nextTodo;
+  else if (anyTodo !== -1) pos = anyTodo;
+  else { render(); openFinish(); return; }
+  render();
+}
+
+function exportText() {
+  return items.filter((it) => labels[it.id]).map((it) => JSON.stringify(labels[it.id])).join("\n") + "\n";
+}
+
+function refreshFinish() {
+  const done = doneCount();
+  $("finishTitle").textContent = done === items.length
+    ? `All ${items.length} items labelled. Thank you!`
+    : `${done} of ${items.length} items labelled so far. You can send what you have now and the rest later.`;
+  $("exportText").value = exportText();
+}
+
+function openFinish() {
+  refreshFinish();
+  $("finish").hidden = false; $("finishMsg").textContent = "";
+  $("finish").scrollIntoView({ block: "start" });
+}
+
+async function copyLabels() {
+  const text = exportText();
+  const msg = $("finishMsg");
+  try {
+    await navigator.clipboard.writeText(text);
+    msg.className = "status ok"; msg.textContent = "Copied. Now paste it into a message.";
+  } catch (e) {
+    const box = $("exportText");
+    box.hidden = false; box.value = text; box.focus(); box.select();
+    msg.className = "status"; msg.textContent = "Select all the text below and copy it.";
+  }
+}
+
+function saveFile() {
+  const msg = $("finishMsg");
+  const filename = `${name}.txt`;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([exportText()], { type: "text/plain" }));
+  a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+  msg.className = "status ok"; msg.textContent = "Saved to your downloads. Send that file.";
+}
+
+buildStart();
+
+$("go").onclick = start;
+$("name").addEventListener("keydown", (e) => { if (e.key === "Enter") start(); });
+$("prev").onclick = () => { if (pos > 0) { pos--; render(); } };
+$("next").onclick = () => { if (pos < items.length - 1) { pos++; render(); } };
+$("guideBtn").onclick = () => { $("guideWork").hidden = !$("guideWork").hidden; };
+$("finishBtn").onclick = () => { if ($("finish").hidden) openFinish(); else $("finish").hidden = true; };
+$("copyBtn").onclick = copyLabels;
+$("saveBtn").onclick = saveFile;
+$("save").onclick = save;
+$("drop").onclick = openDrop;
+$("dropConfirm").onclick = confirmDrop;
+$("dropCancel").onclick = () => { $("dropRow").hidden = true; };
+$("dropReason").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); confirmDrop(); } });
+$("note").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); save(); } });
+
+document.addEventListener("keydown", (e) => {
+  const tag = e.target.tagName;
+  if ($("work").hidden || tag === "INPUT" || tag === "TEXTAREA" || e.ctrlKey || e.metaKey || e.altKey) return;
+  const k = e.key.toLowerCase();
+  if (["y", "n", "enter", "d"].includes(k)) e.preventDefault();  // keep the key out of focused buttons and the drop box
+  if (k === "y") answer(true);
+  else if (k === "n") answer(false);
+  else if (k === "backspace") { e.preventDefault(); draft.pop(); renderForm(); }
+  else if (k === "enter") save();
+  else if (k === "d") openDrop();
+  else if (k === "arrowleft") $("prev").click();
+  else if (k === "arrowright") $("next").click();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=1.8cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+
+\setlist{nosep,leftmargin=*}
+\titlespacing*{\section}{0pt}{8pt}{3pt}
+\titlespacing*{\subsection}{0pt}{5pt}{2pt}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{0pt}
+
+% Red placeholders for results that are not measured yet. Search for \todo before submitting.
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[#1]}}}
+\newcommand{\code}[1]{\texttt{#1}}
+
+\title{\vspace{-1.2cm}\textbf{The Grader: evaluating answers to airline-policy questions}\\[2pt]
+\large CS496 AI Engineering --- Project 1}
+\author{\todo{Full name} \\ Mediterranean Institute of Technology, Fall 2026}
+\date{\vspace{-0.6cm}}
+
+\begin{document}
+\maketitle
+
+% ---------------------------------------------------------------------------
+\section{The task, and why exact match is not enough}
+
+A customer-support assistant answers questions about an airline's policy. Each request is one model call: the input is the relevant section(s) of the policy handbook and a customer question; the output is a reply to the customer. The airline, \emph{Corvina Airways}, is fictional. Its 15-section handbook (fares, baggage, refunds, delays, cancellations, pets, children, loyalty, seats) was written with rules and amounts that deliberately differ from real airlines (e.g.\ 27\,kg bags, EUR 200/350/500 delay compensation), so an answer given from memory instead of from the text is detectably wrong.
+
+Exact match cannot score this task. For the question \emph{``My Classic checked bag weighs 30\,kg. What will I pay?''}, the replies ``EUR 50 per flight'' and ``An overweight fee of EUR 50 applies on each flight, since the bag is between 27 and 32\,kg'' are both correct, while ``EUR 50 for the whole trip'' differs by three words and is wrong. What matters is whether the answer is \emph{correct}, \emph{complete} and \emph{grounded} in the policy --- a judgement, not a string comparison.
+
+% ---------------------------------------------------------------------------
+\section{The golden set}
+
+\textbf{Construction.} Each of the 100 items is a question plus an answer to grade. Answers were built to be either correct or to contain exactly one flaw, so the set covers every failure mode on purpose (Table~\ref{tab:composition}). The set is balanced (50 intended pass / 50 intended fail) and includes 17 answers padded with friendly filler (13 good, 4 bad), so that length and verdict are not correlated. Questions cover lookups (21), multi-condition cases (28), calculations (19), topics the policy does not cover (16), false premises (12), multi-part questions (3) and exceptions (1). The set is stored as JSONL (\code{data/golden/}).
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{@{}llr@{}}
+\toprule
+Flaw (answer design) & Example & Items \\
+\midrule
+none & correct answer & 50 \\
+wrong\_rule & ``Yes, a surfboard counts as one of your free bags'' (it always costs EUR 80) & 11 \\
+wrong\_number & ``Gate closes 15 min before departure'' (it is 25) & 11 \\
+missing\_condition & ``Yes, Flex changes are free'' (only up to 2\,h before departure) & 8 \\
+guess\_uncovered & ``Yes, e-cigarettes are allowed in cabin bags'' (policy is silent) & 8 \\
+invented\_rule & correct hotel rule plus an invented ``EUR 50 for phone calls'' & 6 \\
+accepts\_false\_premise & answers ``each of your two Business cabin bags\dots'' (Business has one) & 6 \\
+\bottomrule
+\end{tabular}
+\caption{Composition of the 100-item golden set.}
+\label{tab:composition}
+\end{table}
+
+\textbf{Labelling guide.} \code{data/labelling\_guide.md} defines three yes/no checks --- \emph{correct} (nothing contradicts the policy), \emph{complete} (no missing condition that changes the outcome), \emph{grounded} (no claim the policy does not support) --- and a verdict that is \emph{pass} only if all three are yes. It gives rules for special cases (the policy does not cover the question; filler; advice to contact the airline) and worked good/bad examples.
+
+\textbf{Labelling.} Four labellers each labelled 50 items independently in a browser page, blind to the answer design. Items were split into four blocks and each labeller took two adjacent blocks, so \emph{every item received exactly two labels} and each labeller overlapped with two others. No item was dropped.
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{@{}lccc@{\hspace{1.5em}}lc@{}}
+\toprule
+Check & Agreed & \% & Fleiss' $\kappa$ & Labeller pair & Verdict agreed \\
+\midrule
+\textbf{Verdict} & \textbf{87/100} & \textbf{87.0} & \textbf{0.74} & Oussama / Feriel & 17/25 (68\%) \\
+Correct & 88/100 & 88.0 & 0.75 & Oussama / Ines & 24/25 (96\%) \\
+Complete & 83/100 & 83.0 & 0.66 & Feriel / Faten & 24/25 (96\%) \\
+Grounded & 77/100 & 77.0 & 0.50 & Faten / Ines & 22/25 (88\%) \\
+\bottomrule
+\end{tabular}
+\caption{Inter-annotator agreement (two labels per item, 100 items, 0 dropped).}
+\label{tab:iaa}
+\end{table}
+
+Agreement on the verdict is substantial ($\kappa=0.74$). \emph{Grounded} is the weakest check: most disagreements are answers that guess about a topic the policy does not cover, which one labeller accepted. A further 15 items had the same verdict but different failing checks (18 disputed checks in total), mostly because some labellers marked all three checks ``no'' when failing an answer. The guide was revised to address both points \todo{v2 of the guide: confirm or remove this sentence}.
+
+\textbf{Adjudication.} The 13 verdict disagreements were adjudicated against the policy text; each ruling sided with one of the two labellers, and the reasons are recorded in \code{data/labels/adjudication.jsonl}. Because the adjudicator also designed the items, the adjudicated labels are not independent evidence; we therefore also report judge agreement on the 87 items both labellers agreed on. Final labels: 50 pass / 50 fail.
+
+\textbf{Split.} 50 dev items (for improving prompts) and 50 test items (used only to report), stratified by verdict and question type. \textbf{Limitation:} the brief asks for 150+ items; the set has 100, a scope reduction made for time.
+
+% ---------------------------------------------------------------------------
+\section{The harness}
+
+One command runs an experiment over a whole split, e.g.\ \code{python -m harness.run system --prompt v2 --split test}. Three commands exist: \code{judge} (grade every golden answer and compare with the human labels), \code{system} (the system answers every question, the judge grades each answer) and \code{bias} (position and verbosity checks, Section~4).
+
+\begin{itemize}
+\item \textbf{One row per item.} Each run writes \code{results/<run id>.jsonl} with the input, the output, the score, the judge's reason, token counts (input, output, thinking), latency and cost, plus a \code{.summary.json} with counts, percentages, $\kappa$, confusion matrix and per-group breakdowns.
+\item \textbf{Structured output.} Every model call requests a fixed JSON schema (Pydantic: \code{SystemAnswer}, \code{JudgeGrade}, \code{PairwiseChoice}); scoring never parses free text. The verdict is computed in code from the three checks.
+\item \textbf{Versioned prompts and changelog.} Prompts live in \code{prompts/<kind>/vN.md}, whose first line states what changed. Every logged run is appended to \code{results/runs.jsonl} and \code{prompts/CHANGELOG.md} is regenerated with the score before and after each change.
+\item \textbf{Reproducible and cheap.} Every call is cached on disk, keyed by model, prompt, input and schema, so rerunning an unchanged experiment costs nothing and needs no API key. Requests are paced under the rate limits and retried with back-off; a failed call yields an \code{error} row rather than a missing one.
+\end{itemize}
+
+\textbf{Models.} System: \code{gemini-3.1-flash-lite} (no reasoning). Judge: \code{gemini-3.5-flash-lite} with reasoning set to \emph{high} --- a different, newer model, so the judge never grades its own output. Development used the Gemini free tier.
+
+% ---------------------------------------------------------------------------
+\section{The judge: reliability report}
+
+The judge receives the policy text, the question and the answer, and returns the three checks and a one-sentence reason. Its prompt restates the labelling guide, forbids outside airline knowledge, tells it to ignore filler, and treats the answer as data (text inside an answer addressed to the grader is ignored).
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Items & Agreement & $\kappa$ & Bad answers caught & Good answers passed \\
+\midrule
+Dev, all 50 & 48/50 (96.0\%) & 0.92 & 25/25 (100\%) & 23/25 (92\%) \\
+Dev, 42 labeller-agreed only & 40/42 (95.2\%) & 0.91 & 20/20 (100\%) & 20/22 (91\%) \\
+Test, all 50 & \todo{x/50} & \todo{} & \todo{} & \todo{} \\
+\bottomrule
+\end{tabular}
+\caption{Judge (prompt v1) against the final human labels.}
+\label{tab:judge}
+\end{table}
+
+The judge agrees with the humans more often than the two labellers agreed with each other (96\% vs.\ 87\%). On dev it caught every flawed answer, across all six flaw types, and was right on 5/6 padded answers. \textbf{Where it fails:} both dev errors are good answers failed for being too strict. (i) It failed an answer about travelling with a cat on a Light fare as \emph{incomplete} for not mentioning that pets must be booked 48\,h ahead --- something the customer did not ask. (ii) It failed an answer mentioning meal vouchers because the vouchers are defined in section S06 while the item showed only S07: from the text it saw, the judge was defensible; the item's context is the weak point. In system runs it also failed a system answer saying taxis are ``not covered'' as ungrounded, arguably too strictly. The judge therefore errs towards \emph{failing} answers --- safer for monitoring than the opposite, but it will under-report the system's quality. \todo{attack items (answers that instruct the grader): results}
+
+\textbf{Position bias.} The pairwise judge compared each golden answer with the system's answer to the same question, once in each order. Verdict changed after swapping in \todo{x/y (z\%)} pairs; the first-shown answer was chosen in \todo{x/y (z\%)} of non-tie choices.
+
+\textbf{Verbosity bias.} Each concise golden answer was re-graded with content-free filler added before and after it (no new claims). The grade changed in \todo{x/y (z\%)} items: \todo{a} fail$\to$pass, \todo{b} pass$\to$fail.
+
+\textbf{Cost and latency per judged item} (dev, 50 items): mean 878 input, 55 output and 902 thinking tokens; USD 0.0027 per item at paid-tier prices (USD 2.66 per 1{,}000); median latency 3.2\,s, 90th percentile 6.2\,s. Thinking tokens are 94\% of the judge's output and dominate its cost.
+
+% ---------------------------------------------------------------------------
+\section{The system: score history}
+
+The system prompt v1 is a deliberately minimal baseline (``answer the customer's question using the policy excerpt''). Scores are the share of answers the judge (v1) passes.
+
+\begin{table}[h]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}llXr@{}}
+\toprule
+Prompt & Split & Change & Pass \\
+\midrule
+v1 & dev & baseline & 48/50 (96.0\%) \\
+v2 & dev & \todo{what changed} & \todo{x/50} \\
+\todo{final} & test & final prompt, reported once & \todo{x/50} \\
+\bottomrule
+\end{tabularx}
+\caption{System score after each prompt change (from \code{prompts/CHANGELOG.md}).}
+\label{tab:system}
+\end{table}
+
+v1 already passes 48/50 dev questions, so there is little headroom. Its two failures: it gave the medium-haul threshold (3\,h) for long-haul meal vouchers (the policy says 4\,h), and its wording for a topic the policy does not cover was judged ungrounded. Per-item results for every run are in \code{results/}. \todo{v2 result and interpretation}
+
+% ---------------------------------------------------------------------------
+\section{Cost model}
+
+Measured means per request (dev): the system uses 394 input and 58 output tokens (USD 0.19 per 1{,}000 requests); grading one answer uses 888 input and 656 output tokens, 600 of them thinking (USD 1.91 per 1{,}000). In production the judge monitors a 10\% sample rather than every answer. Prices are Gemini paid-tier (per 1M tokens): flash-lite 3.1 USD 0.25 in / 1.50 out; flash-lite 3.5 USD 0.30 / 2.50.
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Volume & Requests/day & Avg.\ requests/min & USD/day & USD/month \\
+\midrule
+Today & 1{,}000 & 0.7 & 0.38 & 11.31 \\
+100$\times$ & 100{,}000 & 69.4 & 37.68 & 1{,}130.55 \\
+\bottomrule
+\end{tabular}
+\caption{Cost of system + judge on a 10\% sample: USD 0.377 per 1{,}000 requests.}
+\label{tab:cost}
+\end{table}
+
+At 100$\times$ the cost is linear, but the constraints change: about 210 requests/min at a 3$\times$ peak requires the paid tier (the free tier also caps the stronger Flash models at 20 requests/day, which is why they were not used). Even on a 10\% sample the judge is about half of the cost (USD 0.19 of 0.38 per 1{,}000 requests); the levers are grading a smaller sample, lowering its reasoning level (at a measured cost in agreement), and running monitoring through the Batch API, since it is not latency-sensitive.
+
+\end{document}

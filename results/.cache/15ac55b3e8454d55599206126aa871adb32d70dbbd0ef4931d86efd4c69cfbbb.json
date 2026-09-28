@@ -1,0 +1,1 @@
+{"model": "gemini-3.5-flash-lite", "raw": "{\n  \"correct\": false,\n  \"complete\": true,\n  \"grounded\": true,\n  \"reason\": \"For a short-haul flight, the policy specifies a 30% refund of the ticket price rather than 50%.\"\n}", "error": null, "tokens": {"input": 746, "output": 58, "thinking": 1167}, "latency_s": 5.039, "cost_usd": 0.0032863000000000002}

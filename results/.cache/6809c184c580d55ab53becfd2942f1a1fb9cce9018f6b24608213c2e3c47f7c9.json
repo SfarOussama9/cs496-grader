@@ -1,0 +1,1 @@
+{"model": "gemini-3.1-flash-lite", "raw": "{\n  \"answer\": \"No, changes are not allowed on a Light fare ticket.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 736, "output": 31, "thinking": 0}, "latency_s": 0.787, "cost_usd": 0.0002305}

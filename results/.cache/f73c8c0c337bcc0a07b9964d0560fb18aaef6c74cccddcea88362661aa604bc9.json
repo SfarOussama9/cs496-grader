@@ -1,0 +1,1 @@
+{"model": "gemini-3.1-flash-lite", "raw": "{\"answer\": \"Yes, for a long-haul flight delay of 3 hours or more, Corvina Airways provides meal vouchers worth EUR 15 per passenger.\", \"policy_covers_question\": true}", "error": null, "tokens": {"input": 470, "output": 43, "thinking": 0}, "latency_s": 1.185, "cost_usd": 0.000182}

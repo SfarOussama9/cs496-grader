@@ -1,0 +1,1 @@
+{"model": "gemini-3.1-flash-lite", "raw": "{\"answer\": \"No, infants do not fly for free. Infants traveling on an adult's lap pay 10% of the adult fare plus taxes.\", \"policy_covers_question\": true}", "error": null, "tokens": {"input": 254, "output": 42, "thinking": 0}, "latency_s": 0.913, "cost_usd": 0.0001265}

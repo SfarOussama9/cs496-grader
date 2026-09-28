@@ -1,0 +1,1 @@
+{"model": "gemini-3.5-flash-lite", "raw": "{\"correct\":true,\"complete\":true,\"grounded\":true,\"reason\":\"The policy does not mention Wi-Fi, and the answer correctly states it is not covered and suggests checking with Corvina directly.\"}", "error": null, "tokens": {"input": 909, "output": 43, "thinking": 498}, "latency_s": 2.376, "cost_usd": 0.0016252}

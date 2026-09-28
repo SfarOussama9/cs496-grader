@@ -1,0 +1,1 @@
+{"model": "gemini-3.5-flash-lite", "raw": "{\n  \"correct\": true,\n  \"complete\": true,\n  \"grounded\": true,\n  \"reason\": \"Section 1 of the policy explicitly states that Silver status is valid until the end of the following calendar year.\"\n}", "error": null, "tokens": {"input": 850, "output": 53, "thinking": 201}, "latency_s": 1.393, "cost_usd": 0.00089}
