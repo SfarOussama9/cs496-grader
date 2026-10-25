@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"The policy states short-haul downgrades receive 30% refunds (EUR 90 for EUR 300 ticket) paid within 7 days, which matches the answer.\"}", "error": null, "tokens": {"input": 769, "output": 49, "thinking": 276}, "latency_s": 12.104, "cost_usd": 4.0346092666665455e-05}

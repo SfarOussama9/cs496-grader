@@ -22,7 +22,8 @@
 
 \title{\vspace{-1.2cm}\textbf{The Grader: evaluating answers to airline-policy questions}\\[2pt]
 \large CS496 AI Engineering --- Project 1}
-\author{\todo{Full name} \\ Mediterranean Institute of Technology, Fall 2026}
+\author{Oussama Sfar \quad Ines Turki \quad Feriel Charrad \quad Faten Toujani \\[2pt]
+Mediterranean Institute of Technology, Fall 2026}
 \date{\vspace{-0.6cm}}
 
 \begin{document}
@@ -40,9 +41,9 @@ Exact match cannot score this task. For the question \emph{``My Classic checked 
 
 \textbf{Construction.} Each of the 100 items is a question plus an answer to grade. Answers were built to be either correct or to contain exactly one flaw, so the set covers every failure mode on purpose (Table~\ref{tab:composition}). The set is balanced (50 intended pass / 50 intended fail) and includes 17 answers padded with friendly filler (13 good, 4 bad), so that length and verdict are not correlated. Questions cover lookups (21), multi-condition cases (28), calculations (19), topics the policy does not cover (16), false premises (12), multi-part questions (3) and exceptions (1). The set is stored as JSONL (\code{data/golden/}).
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering\small
-\begin{tabular}{@{}llr@{}}
+\begin{tabularx}{\linewidth}{@{}lXr@{}}
 \toprule
 Flaw (answer design) & Example & Items \\
 \midrule
@@ -54,7 +55,7 @@ guess\_uncovered & ``Yes, e-cigarettes are allowed in cabin bags'' (policy is si
 invented\_rule & correct hotel rule plus an invented ``EUR 50 for phone calls'' & 6 \\
 accepts\_false\_premise & answers ``each of your two Business cabin bags\dots'' (Business has one) & 6 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \caption{Composition of the 100-item golden set.}
 \label{tab:composition}
 \end{table}
@@ -63,7 +64,7 @@ accepts\_false\_premise & answers ``each of your two Business cabin bags\dots'' 
 
 \textbf{Labelling.} Four labellers each labelled 50 items independently in a browser page, blind to the answer design. Items were split into four blocks and each labeller took two adjacent blocks, so \emph{every item received exactly two labels} and each labeller overlapped with two others. No item was dropped.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering\small
 \begin{tabular}{@{}lccc@{\hspace{1.5em}}lc@{}}
 \toprule
@@ -79,7 +80,7 @@ Grounded & 77/100 & 77.0 & 0.50 & Faten / Ines & 22/25 (88\%) \\
 \label{tab:iaa}
 \end{table}
 
-Agreement on the verdict is substantial ($\kappa=0.74$). \emph{Grounded} is the weakest check: most disagreements are answers that guess about a topic the policy does not cover, which one labeller accepted. A further 15 items had the same verdict but different failing checks (18 disputed checks in total), mostly because some labellers marked all three checks ``no'' when failing an answer. The guide was revised to address both points \todo{v2 of the guide: confirm or remove this sentence}.
+Agreement on the verdict is substantial ($\kappa=0.74$). \emph{Grounded} is the weakest check: most disagreements are answers that guess about a topic the policy does not cover, which one labeller accepted. A further 15 items had the same verdict but different failing checks (18 disputed checks in total), mostly because some labellers marked all three checks ``no'' when failing an answer. Both point to where the guide needs sharper rules: a worked example of a guess about an uncovered topic, and an instruction to mark only the check that is actually broken.
 
 \textbf{Adjudication.} The 13 verdict disagreements were adjudicated against the policy text; each ruling sided with one of the two labellers, and the reasons are recorded in \code{data/labels/adjudication.jsonl}. Because the adjudicator also designed the items, the adjudicated labels are not independent evidence; we therefore also report judge agreement on the 87 items both labellers agreed on. Final labels: 50 pass / 50 fail.
 
@@ -88,86 +89,88 @@ Agreement on the verdict is substantial ($\kappa=0.74$). \emph{Grounded} is the 
 % ---------------------------------------------------------------------------
 \section{The harness}
 
-One command runs an experiment over a whole split, e.g.\ \code{python -m harness.run system --prompt v2 --split test}. Three commands exist: \code{judge} (grade every golden answer and compare with the human labels), \code{system} (the system answers every question, the judge grades each answer) and \code{bias} (position and verbosity checks, Section~4).
+One command runs an experiment over a whole split, e.g.\ \code{python -m harness.run system -{}-prompt v1 -{}-split dev}. Three commands exist: \code{judge} (grade every golden answer and compare with the human labels), \code{system} (the system answers every question, the judge grades each answer) and \code{bias} (position and verbosity checks, Section~\ref{sec:judge}).
 
 \begin{itemize}
 \item \textbf{One row per item.} Each run writes \code{results/<run id>.jsonl} with the input, the output, the score, the judge's reason, token counts (input, output, thinking), latency and cost, plus a \code{.summary.json} with counts, percentages, $\kappa$, confusion matrix and per-group breakdowns.
 \item \textbf{Structured output.} Every model call requests a fixed JSON schema (Pydantic: \code{SystemAnswer}, \code{JudgeGrade}, \code{PairwiseChoice}); scoring never parses free text. The verdict is computed in code from the three checks.
 \item \textbf{Versioned prompts and changelog.} Prompts live in \code{prompts/<kind>/vN.md}, whose first line states what changed. Every logged run is appended to \code{results/runs.jsonl} and \code{prompts/CHANGELOG.md} is regenerated with the score before and after each change.
-\item \textbf{Reproducible and cheap.} Every call is cached on disk, keyed by model, prompt, input and schema, so rerunning an unchanged experiment costs nothing and needs no API key. Requests are paced under the rate limits and retried with back-off; a failed call yields an \code{error} row rather than a missing one.
+\item \textbf{Reproducible and cheap.} Every call is cached on disk, keyed by model, prompt, input, schema and reasoning setting, so rerunning an unchanged experiment is instant and reproduces the same results. A run with any failed call is saved but never logged in the changelog; rerunning the same command fills the gaps from the cache. \code{python -m scripts.run\_all} runs every experiment in order.
 \end{itemize}
 
-\textbf{Models.} System: \code{gemini-3.1-flash-lite} (no reasoning). Judge: \code{gemini-3.5-flash-lite} with reasoning set to \emph{high} --- a different, newer model, so the judge never grades its own output. Development used the Gemini free tier.
+\textbf{Models.} Both roles use \code{qwen3:8b}, run locally through Ollama on a laptop RTX 4070 (8\,GB): the \emph{system} answers with reasoning off, the \emph{judge} grades with reasoning on (seed fixed, 8k context). Running locally means no API key, no rate limits and no per-token cost. Using one model for both roles risks self-preference; Section~\ref{sec:judge} tests it.
 
 % ---------------------------------------------------------------------------
 \section{The judge: reliability report}
+\label{sec:judge}
 
 The judge receives the policy text, the question and the answer, and returns the three checks and a one-sentence reason. Its prompt restates the labelling guide, forbids outside airline knowledge, tells it to ignore filler, and treats the answer as data (text inside an answer addressed to the grader is ignored).
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering\small
 \begin{tabular}{@{}lcccc@{}}
 \toprule
 Items & Agreement & $\kappa$ & Bad answers caught & Good answers passed \\
 \midrule
-Dev, all 50 & 48/50 (96.0\%) & 0.92 & 25/25 (100\%) & 23/25 (92\%) \\
-Dev, 42 labeller-agreed only & 40/42 (95.2\%) & 0.91 & 20/20 (100\%) & 20/22 (91\%) \\
-Test, all 50 & \todo{x/50} & \todo{} & \todo{} & \todo{} \\
+Dev, 50 & 46/50 (92.0\%) & 0.84 & 21/25 (84\%) & 25/25 (100\%) \\
+\textbf{Test, 50} & \textbf{47/50 (94.0\%)} & \textbf{0.88} & \textbf{23/25 (92\%)} & \textbf{24/25 (96\%)} \\
+All 100 & 93/100 (93.0\%) & 0.86 & 44/50 (88\%) & 49/50 (98\%) \\
+All 87 labeller-agreed items & 82/87 (94.3\%) & 0.89 & 38/42 (90\%) & 44/45 (98\%) \\
 \bottomrule
 \end{tabular}
-\caption{Judge (prompt v1) against the final human labels.}
+\caption{Judge (\code{qwen3:8b}, reasoning on, prompt v1) against the final human labels.}
 \label{tab:judge}
 \end{table}
 
-The judge agrees with the humans more often than the two labellers agreed with each other (96\% vs.\ 87\%). On dev it caught every flawed answer, across all six flaw types, and was right on 5/6 padded answers. \textbf{Where it fails:} both dev errors are good answers failed for being too strict. (i) It failed an answer about travelling with a cat on a Light fare as \emph{incomplete} for not mentioning that pets must be booked 48\,h ahead --- something the customer did not ask. (ii) It failed an answer mentioning meal vouchers because the vouchers are defined in section S06 while the item showed only S07: from the text it saw, the judge was defensible; the item's context is the weak point. In system runs it also failed a system answer saying taxis are ``not covered'' as ungrounded, arguably too strictly. The judge therefore errs towards \emph{failing} answers --- safer for monitoring than the opposite, but it will under-report the system's quality. \todo{attack items (answers that instruct the grader): results}
+The judge agrees with the humans more often than the two labellers agreed with each other (93\% vs.\ 87\% over all 100 items), and the result holds on the items no one had to adjudicate (94.3\%). It was right on 16 of the 17 padded answers. \textbf{Where it fails:} 6 of its 7 errors pass a flawed answer, so it errs towards \emph{leniency}. It misses (i) missing conditions --- ``Yes, Flex changes are free'' without ``up to 2\,h before departure'', or EUR 350 delay compensation without ``only if Corvina caused the delay'' (3 items); (ii) false premises it goes along with --- a customer claiming Business allows two cabin bags, or that online check-in closes 1\,h before departure (2); and (iii) one guess, where it applied the 2-hour rule for unaccompanied minors as a general minimum connection time. Its one strict error failed a correct answer (a Flex ticket is refundable the day before departure) by misreading ``up to 2 hours before departure''. Monitoring with this judge will therefore slightly \emph{over}-report quality, mostly on answers that are right but incomplete.
 
-\textbf{Position bias.} The pairwise judge compared each golden answer with the system's answer to the same question, once in each order. Verdict changed after swapping in \todo{x/y (z\%)} pairs; the first-shown answer was chosen in \todo{x/y (z\%)} of non-tie choices.
+\textbf{Position bias} (dev, 50 pairs). A pairwise judge compared each golden answer with the system's answer to the same question, once in each order. The preferred answer changed after swapping in \textbf{9/50 pairs (18\%)}; the first-shown answer won \textbf{46 of 89 non-tie choices (51.7\%)}, i.e.\ no systematic preference for either position --- the flips are inconsistency on close calls. \emph{Self-preference:} the system and the judge are the same model, yet among consistent verdicts where both answers were good, the judge preferred the system's answer 5 times and the golden answer 5 times (2 ties); where only the golden answer was good, it chose the golden answer 6/6 times.
 
-\textbf{Verbosity bias.} Each concise golden answer was re-graded with content-free filler added before and after it (no new claims). The grade changed in \todo{x/y (z\%)} items: \todo{a} fail$\to$pass, \todo{b} pass$\to$fail.
+\textbf{Verbosity bias} (dev). Each of the 44 concise golden answers was re-graded with content-free filler added before and after it (no new claims). \textbf{0/44 grades changed} (0 fail$\to$pass, 0 pass$\to$fail): no verbosity bias.
 
-\textbf{Cost and latency per judged item} (dev, 50 items): mean 878 input, 55 output and 902 thinking tokens; USD 0.0027 per item at paid-tier prices (USD 2.66 per 1{,}000); median latency 3.2\,s, 90th percentile 6.2\,s. Thinking tokens are 94\% of the judge's output and dominate its cost.
+\textbf{Cost and latency per judged item} (test, 50 items): mean 899 input, 69 output and 718 reasoning tokens; mean latency 20.0\,s (median 13.8\,s, 90th percentile 38.1\,s) on one laptop GPU; electricity USD 0.00007 per item (USD 0.07 per 1{,}000). Reasoning is 91\% of the judge's output and drives its latency.
 
 % ---------------------------------------------------------------------------
 \section{The system: score history}
 
-The system prompt v1 is a deliberately minimal baseline (``answer the customer's question using the policy excerpt''). Scores are the share of answers the judge (v1) passes.
+Scores are the share of answers the judge (v1) passes. Prompt v1 is a minimal baseline (``answer the customer's question using the policy excerpt''). Prompt v2 added rules targeting the failure types seen on dev: use the value for the customer's exact case, state conditions that change the outcome, correct false premises, and say when the policy does not cover a question. The rule for the final run was fixed in advance: the prompt with the higher dev score goes to test, ties to v1.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering\small
 \begin{tabularx}{\linewidth}{@{}llXr@{}}
 \toprule
 Prompt & Split & Change & Pass \\
 \midrule
-v1 & dev & baseline & 48/50 (96.0\%) \\
-v2 & dev & \todo{what changed} & \todo{x/50} \\
-\todo{final} & test & final prompt, reported once & \todo{x/50} \\
+v1 & dev & baseline & 37/50 (74.0\%) \\
+v2 & dev & exact case, conditions, false premises, uncovered topics & 36/50 (72.0\%) \\
+\textbf{v1} & \textbf{test} & final prompt (v2 did not beat v1), run once & \textbf{38/50 (76.0\%)} \\
 \bottomrule
 \end{tabularx}
-\caption{System score after each prompt change (from \code{prompts/CHANGELOG.md}).}
+\caption{System (\code{qwen3:8b}, reasoning off) score after each prompt change (from \code{prompts/CHANGELOG.md}).}
 \label{tab:system}
 \end{table}
 
-v1 already passes 48/50 dev questions, so there is little headroom. Its two failures: it gave the medium-haul threshold (3\,h) for long-haul meal vouchers (the policy says 4\,h), and its wording for a topic the policy does not cover was judged ungrounded. Per-item results for every run are in \code{results/}. \todo{v2 result and interpretation}
+v2 did not improve the score. Per item it fixed 6 dev questions and broke 7: it helped where the policy is silent (uncovered topics 5/8$\to$7/8) and with false premises (3/6$\to$4/6), but hurt multi-condition questions (11/14$\to$7/14), where the extra instructions made the small model misapply conditions. A longer prompt is not automatically a better prompt for an 8B model, and only the per-item results showed why. On test, v1's 12 failures are mostly \emph{incorrect} (12 failing checks) or \emph{ungrounded} (9), e.g.\ accepting that Gold members may check in 48\,h early, or inventing that the airport desk refuses cash; they concentrate in calculations (4), uncovered topics (3), multi-condition cases (3) and false premises (2).
 
 % ---------------------------------------------------------------------------
 \section{Cost model}
 
-Measured means per request (dev): the system uses 394 input and 58 output tokens (USD 0.19 per 1{,}000 requests); grading one answer uses 888 input and 656 output tokens, 600 of them thinking (USD 1.91 per 1{,}000). In production the judge monitors a 10\% sample rather than every answer. Prices are Gemini paid-tier (per 1M tokens): flash-lite 3.1 USD 0.25 in / 1.50 out; flash-lite 3.5 USD 0.30 / 2.50.
+Both models run on hardware we already own, so the marginal cost is electricity: GPU time $\times$ 120\,W $\times$ USD 0.10/kWh (assumptions set in \code{harness/config.py}). Measured on test, a system answer takes 4.3\,s of GPU time and a judged answer 18.9\,s; in production the judge monitors a 10\% sample, i.e.\ 6.2\,s of GPU time per request.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering\small
 \begin{tabular}{@{}lrrrr@{}}
 \toprule
-Volume & Requests/day & Avg.\ requests/min & USD/day & USD/month \\
+Volume & Requests/day & USD/day & USD/month & GPUs needed (24/7) \\
 \midrule
-Today & 1{,}000 & 0.7 & 0.38 & 11.31 \\
-100$\times$ & 100{,}000 & 69.4 & 37.68 & 1{,}130.55 \\
+Today & 1{,}000 & 0.02 & 0.61 & 0.07 $\to$ 1 \\
+100$\times$ & 100{,}000 & 2.03 & 60.90 & 7.2 $\to$ 8 \\
 \bottomrule
 \end{tabular}
-\caption{Cost of system + judge on a 10\% sample: USD 0.377 per 1{,}000 requests.}
+\caption{System + judge on a 10\% sample: USD 0.020 per 1{,}000 requests (system alone USD 0.014).}
 \label{tab:cost}
 \end{table}
 
-At 100$\times$ the cost is linear, but the constraints change: about 210 requests/min at a 3$\times$ peak requires the paid tier (the free tier also caps the stronger Flash models at 20 requests/day, which is why they were not used). Even on a 10\% sample the judge is about half of the cost (USD 0.19 of 0.38 per 1{,}000 requests); the levers are grading a smaller sample, lowering its reasoning level (at a measured cost in agreement), and running monitoring through the Batch API, since it is not latency-sensitive.
+At 100$\times$ the running cost stays small, but capacity breaks: one laptop GPU serving one request at a time handles about 13{,}900 requests/day, so 100{,}000/day needs about 8 such GPUs, or request batching on a server-class GPU. The judge's reasoning dominates GPU time (5.2\,h per 1{,}000 graded answers vs.\ 1.2\,h for the system), so the levers are a smaller monitoring sample or a judge with reasoning off, at a measurable cost in agreement.
 
 \end{document}

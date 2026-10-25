@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"Corvina Airways does not provide Wi-Fi on board any of its flights.\",\n  \"policy_covers_question\": false\n}", "error": null, "tokens": {"input": 421, "output": 34, "thinking": 0}, "latency_s": 3.16, "cost_usd": 1.053245033333345e-05}

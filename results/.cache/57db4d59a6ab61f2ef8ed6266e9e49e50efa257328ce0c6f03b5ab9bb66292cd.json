@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"The policy explicitly states that extra legroom seats on long-haul flights cost EUR 50 per flight, which matches the answer.\"}", "error": null, "tokens": {"input": 769, "output": 45, "thinking": 239}, "latency_s": 10.327, "cost_usd": 3.442269833333285e-05}

@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"Policy section 1 explicitly states all passengers including Light may bring one personal item, which the answer correctly confirms.\"}", "error": null, "tokens": {"input": 714, "output": 40, "thinking": 259}, "latency_s": 11.103, "cost_usd": 3.701148633333408e-05}

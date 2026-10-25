@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"better\": \"A\",\n\"reason\": \"Answer A correctly applies the 30% refund rate for short-haul flights as specified in the policy, while Answer B incorrectly uses the medium-haul 50% rate.\"}", "error": null, "tokens": {"input": 509, "output": 52, "thinking": 159}, "latency_s": 6.788, "cost_usd": 2.262672999999874e-05}

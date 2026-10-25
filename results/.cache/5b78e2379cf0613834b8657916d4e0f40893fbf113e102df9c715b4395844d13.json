@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{ \"answer\": \"If you cancel your award ticket 3 days before departure, your points will be redeposited for a fee of EUR 30, and the taxes will be refunded.\",\"policy_covers_question\": true }", "error": null, "tokens": {"input": 409, "output": 49, "thinking": 0}, "latency_s": 4.237, "cost_usd": 1.412405566666621e-05}

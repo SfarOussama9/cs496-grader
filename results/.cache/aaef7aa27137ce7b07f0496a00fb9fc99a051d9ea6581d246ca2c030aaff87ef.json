@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\"answer\": \"Yes, Corvina Club Gold members get free seat selection.\",\"policy_covers_question\": true}", "error": null, "tokens": {"input": 633, "output": 27, "thinking": 0}, "latency_s": 3.173, "cost_usd": 1.0576232666668755e-05}

@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"The policy explicitly states that Business class cabin bags have a weight limit of 12 kg, which matches the answer.\"}", "error": null, "tokens": {"input": 701, "output": 42, "thinking": 499}, "latency_s": 14.321, "cost_usd": 4.773643933333612e-05}

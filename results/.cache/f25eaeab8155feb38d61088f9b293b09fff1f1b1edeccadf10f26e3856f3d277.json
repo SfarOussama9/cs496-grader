@@ -1,1 +1,0 @@
-{"model": "gemini-3.1-flash-lite", "raw": "{\"answer\": \"Once you earn Silver status, it is valid until the end of the following calendar year.\", \"policy_covers_question\": true}", "error": null, "tokens": {"input": 388, "output": 31, "thinking": 0}, "latency_s": 1.88, "cost_usd": 0.0001435}

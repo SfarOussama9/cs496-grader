@@ -1,1 +1,0 @@
-{"model": "gemini-3.5-flash-lite", "raw": "{\"correct\":true,\"complete\":true,\"grounded\":false,\"reason\":\"The policy does not mention taxi expenses, so the answer's assertion that the policy does not cover them is ungrounded.\"}", "error": null, "tokens": {"input": 839, "output": 43, "thinking": 2569}, "latency_s": 8.556, "cost_usd": 0.0067817}

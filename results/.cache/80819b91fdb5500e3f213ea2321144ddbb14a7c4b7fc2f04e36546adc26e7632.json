@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"Yes, your 13-year-old child must use the unaccompanied minor (UM) service. The fee is EUR 70 per direction.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 285, "output": 50, "thinking": 0}, "latency_s": 3.737, "cost_usd": 1.245662999999998e-05}

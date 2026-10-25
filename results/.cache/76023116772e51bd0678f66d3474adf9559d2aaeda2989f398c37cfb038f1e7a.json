@@ -1,1 +1,0 @@
-{"model": "gemini-3.5-flash-lite", "raw": "{\"correct\": false, \"complete\": false, \"grounded\": false, \"reason\": \"Under the Light fare policy, no refund is paid if refundable taxes are EUR 15 or less, so the customer will not receive the EUR 12 back.\"}", "error": null, "tokens": {"input": 852, "output": 55, "thinking": 763}, "latency_s": 3.087, "cost_usd": 0.0023006}

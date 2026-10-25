@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"You are entitled to a refund of 30% of the ticket price for the short-haul flight. Since your ticket cost EUR 300, the refund amount is EUR 90.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 293, "output": 59, "thinking": 0}, "latency_s": 4.323, "cost_usd": 1.4408405333333577e-05}

@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"The policy does not mention Wi-Fi on board, so the answer correctly states that the policy does not cover this question.\"}", "error": null, "tokens": {"input": 868, "output": 42, "thinking": 297}, "latency_s": 12.259, "cost_usd": 4.086477366666562e-05}

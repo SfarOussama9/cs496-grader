@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"The minimum connection time when changing planes in Tunis is 2 hours.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 675, "output": 32, "thinking": 0}, "latency_s": 3.144, "cost_usd": 1.047963000000133e-05}

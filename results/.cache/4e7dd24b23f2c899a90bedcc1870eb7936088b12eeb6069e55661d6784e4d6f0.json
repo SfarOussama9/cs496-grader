@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"The policy explicitly defines an adult as 12 years and over on the date of travel, which matches the answer exactly.\"}", "error": null, "tokens": {"input": 798, "output": 40, "thinking": 450}, "latency_s": 13.1, "cost_usd": 4.366746366666121e-05}

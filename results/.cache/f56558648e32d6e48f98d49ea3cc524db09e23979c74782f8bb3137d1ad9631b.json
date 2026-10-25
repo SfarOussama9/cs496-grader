@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"The policy explicitly states that the standard size limit is 158 cm (section 2), which the answer correctly identifies.\"}", "error": null, "tokens": {"input": 891, "output": 43, "thinking": 357}, "latency_s": 11.175, "cost_usd": 3.7250909999999824e-05}

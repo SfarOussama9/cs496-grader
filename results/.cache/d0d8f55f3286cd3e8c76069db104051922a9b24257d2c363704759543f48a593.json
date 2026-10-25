@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"You are entitled to a refund of 30% of the ticket price for the short-haul flight, which is EUR 90. The refund will be paid within 7 days.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 421, "output": 56, "thinking": 0}, "latency_s": 4.2, "cost_usd": 1.399840433333035e-05}

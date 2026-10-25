@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"If you cancel your award ticket 3 days before departure, your points will be forfeited, and only the taxes will be refunded.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 537, "output": 45, "thinking": 0}, "latency_s": 3.996, "cost_usd": 1.3318620000003042e-05}

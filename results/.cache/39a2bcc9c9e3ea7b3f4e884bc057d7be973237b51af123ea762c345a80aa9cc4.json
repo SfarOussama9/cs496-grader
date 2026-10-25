@@ -1,1 +1,0 @@
-{"model": "gemini-3.1-flash-lite", "raw": "{\n  \"answer\": \"As a Light passenger, you can add a cabin bag online for EUR 20 per flight, up to 6 hours before departure.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 240, "output": 48, "thinking": 0}, "latency_s": 0.877, "cost_usd": 0.000132}

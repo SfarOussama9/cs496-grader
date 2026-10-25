@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{ \"answer\": \"For your baby, you can check one bag of up to 10 kg for free, along with one foldable stroller.\",\"policy_covers_question\": true }", "error": null, "tokens": {"input": 557, "output": 41, "thinking": 0}, "latency_s": 3.663, "cost_usd": 1.2210278666667971e-05}

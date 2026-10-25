@@ -1,1 +1,0 @@
-{"model": "gemini-3.1-flash-lite", "raw": "{\"answer\": \"For infants, you are allowed to check in one bag of up to 10 kg and one foldable stroller free of charge.\", \"policy_covers_question\": true}", "error": null, "tokens": {"input": 415, "output": 39, "thinking": 0}, "latency_s": 1.658, "cost_usd": 0.00016225}

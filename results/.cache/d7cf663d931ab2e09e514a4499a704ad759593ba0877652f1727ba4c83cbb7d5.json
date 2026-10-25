@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"Yes, you are entitled to meal vouchers. Since your long-haul departure is delayed by 3 hours, Corvina provides meal vouchers worth EUR 15 per passenger.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 609, "output": 53, "thinking": 0}, "latency_s": 4.133, "cost_usd": 1.3777656999997514e-05}

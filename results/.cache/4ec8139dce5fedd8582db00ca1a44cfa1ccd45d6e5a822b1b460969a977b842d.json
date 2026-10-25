@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"better\": \"B\",\n\"reason\": \"Answer B correctly cites EUR 50 for long-haul flights, matching policy S15.2, while Answer A incorrectly states EUR 35, which is only for medium-haul flights.\"}", "error": null, "tokens": {"input": 499, "output": 46, "thinking": 315}, "latency_s": 10.218, "cost_usd": 3.405968166666753e-05}

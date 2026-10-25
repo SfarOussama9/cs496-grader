@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"In Business class, each cabin bag has a weight limit of 12 kg. This is included in the fare family and no additional charge applies for the cabin bag weight limit.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 608, "output": 54, "thinking": 0}, "latency_s": 4.073, "cost_usd": 1.3577635999999983e-05}

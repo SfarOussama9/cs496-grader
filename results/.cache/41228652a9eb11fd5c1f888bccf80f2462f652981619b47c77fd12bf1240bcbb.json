@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": false, \"complete\": true, \"grounded\": false, \"reason\": \"The policy does not mention Wi-Fi, so the answer invents a claim not supported by the policy.\"}", "error": null, "tokens": {"input": 874, "output": 37, "thinking": 1186}, "latency_s": 38.359, "cost_usd": 0.0001278622469999997}

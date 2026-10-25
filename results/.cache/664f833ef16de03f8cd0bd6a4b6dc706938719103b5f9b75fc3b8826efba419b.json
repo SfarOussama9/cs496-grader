@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{ \"answer\": \"An extra checked bag costs EUR 35 per bag per flight if purchased online at least 6 hours before departure, and EUR 70 per bag per flight if purchased at the airport.\",\"policy_covers_question\":true }", "error": null, "tokens": {"input": 439, "output": 54, "thinking": 0}, "latency_s": 3.53, "cost_usd": 1.1766868333331029e-05}

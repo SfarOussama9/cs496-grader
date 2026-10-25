@@ -1,1 +1,0 @@
-{"model": "gemini-3.5-flash-lite", "raw": "{\"correct\":false,\"complete\":true,\"grounded\":false,\"reason\":\"The policy allows a personal item but does not mention any duty-free bag or a 3 kg weight limit, making the extra claim ungrounded and incorrect.\"}", "error": null, "tokens": {"input": 736, "output": 50, "thinking": 1528}, "latency_s": 7.053, "cost_usd": 0.0041658}

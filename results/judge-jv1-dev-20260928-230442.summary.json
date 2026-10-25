@@ -1,0 +1,67 @@
+{
+ "run_id": "judge-jv1-dev-20260928-230442",
+ "kind": "judge",
+ "split": "dev",
+ "items": 50,
+ "prompts": {
+  "judge": "v1"
+ },
+ "models": {
+  "system": "qwen3:8b (no thinking)",
+  "judge": "qwen3:8b (thinking)"
+ },
+ "change": "judge v1: labelling-guide criteria, reference-free, answer treated as data",
+ "metric": "agreement with humans",
+ "score": 92.0,
+ "headline": "46/50 (92.0%), kappa 0.84",
+ "cost_usd_total": 0.004651,
+ "fresh_calls_cost_usd": 0.004522,
+ "created_at": "20260928-230442",
+ "agreement_with_humans": {
+  "n": 50,
+  "agree": 46,
+  "agree_pct": 92.0,
+  "kappa": 0.84,
+  "confusion": {
+   "gold_fail_judged_fail": 21,
+   "gold_fail_judged_pass": 4,
+   "gold_pass_judged_fail": 0,
+   "gold_pass_judged_pass": 25
+  },
+  "fail_recall_pct": 84.0,
+  "pass_recall_pct": 100.0
+ },
+ "errors": 0,
+ "by_flaw": {
+  "accepts_false_premise": "2/3",
+  "guess_uncovered": "3/4",
+  "invented_rule": "2/2",
+  "missing_condition": "2/4",
+  "none": "25/25",
+  "wrong_number": "5/5",
+  "wrong_rule": "7/7"
+ },
+ "by_category": {
+  "exception": "1/1",
+  "false_premise": "5/6",
+  "lookup": "10/11",
+  "multi_condition": "13/14",
+  "multi_part": "1/1",
+  "numeric": "9/9",
+  "uncovered": "7/8"
+ },
+ "by_style": {
+  "concise": "40/44",
+  "padded": "6/6"
+ },
+ "judge_usage": {
+  "calls": 50,
+  "mean_input_tokens": 874.9,
+  "mean_output_tokens": 67.8,
+  "mean_thinking_tokens": 1004.3,
+  "cost_per_item_usd": 9.3e-05,
+  "cost_per_1k_usd": 0.093,
+  "latency_median_s": 12.971,
+  "latency_p90_s": 36.766
+ }
+}

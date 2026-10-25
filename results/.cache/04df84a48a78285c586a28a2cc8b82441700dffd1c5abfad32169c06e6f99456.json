@@ -1,1 +1,0 @@
-{"model": "gemini-3.5-flash-lite", "raw": "{\n  \"correct\": true,\n  \"complete\": true,\n  \"grounded\": true,\n  \"reason\": \"The policy explicitly states that tickets cannot be transferred to another person.\"\n}", "error": null, "tokens": {"input": 881, "output": 44, "thinking": 491}, "latency_s": 2.246, "cost_usd": 0.0016018}

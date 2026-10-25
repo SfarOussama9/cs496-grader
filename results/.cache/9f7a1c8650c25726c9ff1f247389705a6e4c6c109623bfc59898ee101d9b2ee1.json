@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": false, \"complete\": true, \"grounded\": false, \"reason\": \"The policy states a 30% refund for short-haul downgrades, but the answer incorrectly states 50%.\"}", "error": null, "tokens": {"input": 842, "output": 39, "thinking": 520}, "latency_s": 14.663, "cost_usd": 4.8876302333334635e-05}

@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\"answer\": \"The total change fee for changing both directions of your Classic return trip is EUR 90, as the fee is EUR 45 per passenger per direction.\",\"policy_covers_question\":true}", "error": null, "tokens": {"input": 403, "output": 45, "thinking": 0}, "latency_s": 3.252, "cost_usd": 1.0840540666666433e-05}

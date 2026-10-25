@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"On a Corvina codeshare flight operated by a partner airline, the baggage rules of the operating airline apply.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 350, "output": 41, "thinking": 0}, "latency_s": 3.349, "cost_usd": 1.1162866666666864e-05}

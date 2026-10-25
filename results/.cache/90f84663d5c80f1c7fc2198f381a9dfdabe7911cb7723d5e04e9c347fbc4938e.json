@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"The policy states Flex tickets allow free changes up to 2 hours before departure, which directly supports the answer.\"}", "error": null, "tokens": {"input": 832, "output": 41, "thinking": 443}, "latency_s": 12.971, "cost_usd": 4.323624966666671e-05}

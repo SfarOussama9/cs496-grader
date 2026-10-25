@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"better\" : \"A\",\n\"reason\" : \"Answer A correctly states the policy does not mention Wi-Fi, while Answer B falsely asserts Corvina Airways does not provide Wi-Fi, which is not supported by the policy text.\"}", "error": null, "tokens": {"input": 635, "output": 46, "thinking": 237}, "latency_s": 8.508, "cost_usd": 2.835849033333337e-05}

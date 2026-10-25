@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"Policy section 2 explicitly states the standard size limit of 158 cm for checked bags, which is the threshold before oversize fees apply.\"}", "error": null, "tokens": {"input": 904, "output": 46, "thinking": 438}, "latency_s": 17.058, "cost_usd": 5.686051399999997e-05}

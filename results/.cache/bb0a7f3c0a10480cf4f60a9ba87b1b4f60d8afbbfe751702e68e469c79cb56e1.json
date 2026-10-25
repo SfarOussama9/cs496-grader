@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"Silver status is valid until the end of the following calendar year.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 529, "output": 31, "thinking": 0}, "latency_s": 3.456, "cost_usd": 1.1518414333331749e-05}

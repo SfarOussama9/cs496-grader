@@ -1,1 +1,0 @@
-{"model": "gemini-3.5-flash-lite", "raw": "{\"correct\":true,\"complete\":true,\"grounded\":true,\"reason\":\"The policy does not mention breast milk, and the answer correctly states this and suggests contacting support.\"}", "error": null, "tokens": {"input": 722, "output": 36, "thinking": 689}, "latency_s": 2.775, "cost_usd": 0.0020291}

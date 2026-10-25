@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\"answer\": \"The policy does not mention the ability to transfer Corvina Club points to another person's account.\",\"policy_covers_question\": false}", "error": null, "tokens": {"input": 533, "output": 33, "thinking": 0}, "latency_s": 3.094, "cost_usd": 1.0314254999999928e-05}

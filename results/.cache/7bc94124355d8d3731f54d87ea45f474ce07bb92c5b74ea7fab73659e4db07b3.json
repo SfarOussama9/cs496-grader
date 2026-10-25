@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\"answer\": \"The policy does not mention Wi-Fi on board.\",\"policy_covers_question\": false}", "error": null, "tokens": {"input": 549, "output": 23, "thinking": 0}, "latency_s": 2.988, "cost_usd": 9.961026999996345e-06}

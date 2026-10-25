@@ -1,1 +1,0 @@
-{"model": "gemini-3.1-flash-lite", "raw": "{\"answer\": \"For a medium-haul flight with an arrival delay of 3 hours or more caused by circumstances within Corvina's control, you are entitled to compensation of EUR 350.\", \"policy_covers_question\": true}", "error": null, "tokens": {"input": 469, "output": 51, "thinking": 0}, "latency_s": 0.902, "cost_usd": 0.00019375}

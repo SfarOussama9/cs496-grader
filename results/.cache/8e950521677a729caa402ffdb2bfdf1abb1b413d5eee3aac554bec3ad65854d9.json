@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{ \"answer\": \"A passenger is counted as an adult if they are 12 years and over on the date of travel.\",\"policy_covers_question\": true }", "error": null, "tokens": {"input": 339, "output": 37, "thinking": 0}, "latency_s": 3.161, "cost_usd": 1.0535215666665561e-05}

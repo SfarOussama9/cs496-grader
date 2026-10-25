@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"No, you cannot claim for the scratch on your suitcase. Minor damage from normal handling, such as scratches, is not covered under Corvina Airways' policy.\",\n  \"policy_covers_question\": false\n}", "error": null, "tokens": {"input": 525, "output": 51, "thinking": 0}, "latency_s": 4.006, "cost_usd": 1.3353341666667498e-05}

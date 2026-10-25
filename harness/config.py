@@ -1,4 +1,4 @@
-"""Models, prices and paths used by the harness."""
+"""Models, cost assumptions and paths used by the harness."""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -9,29 +9,21 @@ GOLD_LABELS = ROOT / "data" / "golden" / "labels.jsonl"
 SPLIT = ROOT / "data" / "golden" / "split.json"
 META = ROOT / "data" / "golden" / "generation_meta.jsonl"
 
-SYSTEM_MODEL = "gemini-3.1-flash-lite"   # the system under test
-JUDGE_MODEL = "gemini-3.5-flash-lite"    # a different, newer model grades it
-JUDGE_THINKING = "high"                  # the judge reasons before grading; the system does not
-# The Flash models were the first choice for the judge, but their free tier allows
-# only 20 requests per day per model (GenerateRequestsPerDayPerProjectPerModel-FreeTier),
-# far too few for this project. Development runs on the free tier.
+# Models run locally through Ollama (https://ollama.com): `ollama pull qwen3:8b`.
+SYSTEM_MODEL = "qwen3:8b"
+SYSTEM_THINKING = False      # the system answers directly
+JUDGE_MODEL = "qwen3:8b"
+JUDGE_THINKING = True        # the judge reasons before grading
 
-# Paid-tier (Standard) USD per 1M tokens, from ai.google.dev/gemini-api/docs/pricing
-# on 2026-09-28. Thinking tokens are billed as output. The free tier costs $0;
-# these prices are what the same traffic costs when paid.
-PRICES = {
-    "gemini-3.1-flash-lite": {"input": 0.25, "output": 1.50},
-    "gemini-3.5-flash-lite": {"input": 0.30, "output": 2.50},
-}
+OLLAMA_URL = "http://localhost:11434"
+# Fixed seed for repeatable sampling; 8k context so long reasoning never truncates the input.
+OLLAMA_OPTIONS = {"num_ctx": 8192, "seed": 496}
 
-# Requests per minute the harness allows itself per model, kept under the free
-# tier's limits so runs don't stall in retry loops.
-REQUESTS_PER_MINUTE = {
-    "gemini-3.1-flash-lite": 10,
-    "gemini-3.5-flash-lite": 10,
-}
+# Local models have no per-token price: cost is the electricity used while the
+# GPU works on a request. Assumptions (change them to your own numbers):
+GPU_WATTS = 120          # laptop RTX 4070 under load, whole-system draw ~120 W
+USD_PER_KWH = 0.10       # household electricity price
 
 
-def cost_usd(model, input_tokens, output_tokens):
-    price = PRICES[model]
-    return (input_tokens * price["input"] + output_tokens * price["output"]) / 1_000_000
+def cost_usd(latency_s):
+    return (latency_s or 0) * GPU_WATTS / 3_600_000 * USD_PER_KWH

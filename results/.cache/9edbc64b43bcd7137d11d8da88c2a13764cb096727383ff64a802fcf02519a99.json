@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"You need to book your pet's travel at least 48 hours before departure.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 401, "output": 36, "thinking": 0}, "latency_s": 3.127, "cost_usd": 1.0424624999996012e-05}

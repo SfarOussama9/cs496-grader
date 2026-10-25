@@ -1,5 +1,14 @@
+# secrets and local environment
 .env
+.venv/
 __pycache__/
 *.pyc
-.venv/
+
+# personal files that are not part of the project
 project1-grader.pdf
+Chapter 1 - Foundations of Deep Learning.pdf
+reporttt (1).pdf
+*.exe
+
+# regenerated on every run
+results/run_all.log

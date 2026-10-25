@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\"answer\": \"The Light fare includes one personal item only. There is no cabin bag and no checked bag included.\",\"policy_covers_question\":true}", "error": null, "tokens": {"input": 420, "output": 33, "thinking": 0}, "latency_s": 3.076, "cost_usd": 1.0254523333333055e-05}

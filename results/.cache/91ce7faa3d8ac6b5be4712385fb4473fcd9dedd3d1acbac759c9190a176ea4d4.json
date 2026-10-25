@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"You will get back EUR 12, as the refundable taxes are EUR 15 or less, and no refund is paid in this case.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 523, "output": 48, "thinking": 0}, "latency_s": 3.949, "cost_usd": 1.3162794333329656e-05}

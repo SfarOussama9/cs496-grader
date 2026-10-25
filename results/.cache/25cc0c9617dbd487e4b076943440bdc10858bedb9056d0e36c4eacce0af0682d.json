@@ -1,1 +1,0 @@
-{"model": "gemini-3.1-flash-lite", "raw": "{\n  \"answer\": \"For a 13-year-old, the unaccompanied minor service is optional, not mandatory. If you choose to use this service, the fee is EUR 70 per direction.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 267, "output": 57, "thinking": 0}, "latency_s": 2.226, "cost_usd": 0.00015225}

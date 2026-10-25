@@ -1,1 +1,0 @@
-{"model": "gemini-3.5-flash-lite", "raw": "{\"correct\":false,\"complete\":false,\"grounded\":false,\"reason\":\"For long-haul flights, the policy requires a departure delay of 4 hours or more for meal vouchers, whereas 3 hours applies to medium-haul flights.\"}", "error": null, "tokens": {"input": 953, "output": 50, "thinking": 902}, "latency_s": 3.458, "cost_usd": 0.0026659}

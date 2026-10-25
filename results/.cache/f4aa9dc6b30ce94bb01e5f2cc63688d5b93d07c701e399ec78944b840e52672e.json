@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"You can add a cabin bag online to a Light booking up to 6 hours before departure.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 254, "output": 36, "thinking": 0}, "latency_s": 3.323, "cost_usd": 1.1076497666666305e-05}

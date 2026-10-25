@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\"answer\": \"The standard size limit for a checked bag before oversize fees apply is that the sum of length, width, and height must not exceed 158 cm.\",\"policy_covers_question\": true}", "error": null, "tokens": {"input": 562, "output": 46, "thinking": 0}, "latency_s": 3.918, "cost_usd": 1.3060681333336108e-05}

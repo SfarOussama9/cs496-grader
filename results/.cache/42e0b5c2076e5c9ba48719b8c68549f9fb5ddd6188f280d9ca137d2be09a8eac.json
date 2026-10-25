@@ -1,1 +1,0 @@
-{"model": "gemini-3.5-flash-lite", "raw": "{\n  \"correct\": true,\n  \"complete\": true,\n  \"grounded\": true,\n  \"reason\": \"The policy does not cover CPAP machines, and the answer correctly states this and suggests contacting Corvina.\"\n}", "error": null, "tokens": {"input": 816, "output": 52, "thinking": 358}, "latency_s": 1.734, "cost_usd": 0.0012698}

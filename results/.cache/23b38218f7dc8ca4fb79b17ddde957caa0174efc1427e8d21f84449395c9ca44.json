@@ -1,1 +1,0 @@
-{"model": "gemini-3.1-flash-lite", "raw": "{\n  \"answer\": \"The Business fare includes one cabin bag of up to 12 kg. It does not include a second cabin bag.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 606, "output": 43, "thinking": 0}, "latency_s": 3.712, "cost_usd": 0.000216}

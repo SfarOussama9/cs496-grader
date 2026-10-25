@@ -1,1 +1,0 @@
-{"model": "gemini-3.5-flash-lite", "raw": "{\"correct\":true,\"complete\":true,\"grounded\":true,\"reason\":\"The policy awards EUR 350 for medium-haul arrival delays of 3 hours or more within Corvina's control.\"}", "error": null, "tokens": {"input": 960, "output": 44, "thinking": 632}, "latency_s": 2.56, "cost_usd": 0.001978}

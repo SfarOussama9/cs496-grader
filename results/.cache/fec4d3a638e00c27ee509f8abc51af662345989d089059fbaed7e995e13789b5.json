@@ -1,1 +1,0 @@
-{"model": "gemini-3.5-flash-lite", "raw": "{\n  \"correct\": true,\n  \"complete\": true,\n  \"grounded\": true,\n  \"reason\": \"The answer accurately and completely lists all the Gold member benefits specified in section 5 of the policy.\"\n}", "error": null, "tokens": {"input": 900, "output": 51, "thinking": 362}, "latency_s": 1.955, "cost_usd": 0.0013025}

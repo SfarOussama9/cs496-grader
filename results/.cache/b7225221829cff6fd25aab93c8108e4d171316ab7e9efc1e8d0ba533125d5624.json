@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{ \"answer\": \"Yes, a foldable stroller is free for your 1-year-old infant, along with one checked bag of up to 10 kg.\",\"policy_covers_question\": true }", "error": null, "tokens": {"input": 430, "output": 44, "thinking": 0}, "latency_s": 3.532, "cost_usd": 1.1771803999999975e-05}

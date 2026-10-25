@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"Priority check-in is available to Business passengers and Corvina Club Silver and Gold members.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 258, "output": 35, "thinking": 0}, "latency_s": 3.46, "cost_usd": 1.1533209333333617e-05}

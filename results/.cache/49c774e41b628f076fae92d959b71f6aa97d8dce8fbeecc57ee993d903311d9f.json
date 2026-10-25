@@ -1,1 +1,0 @@
-{"model": "gemini-3.1-flash-lite", "raw": "{\"answer\": \"Yes, Flex tickets allow for free changes up to 2 hours before the scheduled departure, though you will be required to pay any applicable fare difference.\", \"policy_covers_question\": true}", "error": null, "tokens": {"input": 371, "output": 43, "thinking": 0}, "latency_s": 4.646, "cost_usd": 0.00015725}

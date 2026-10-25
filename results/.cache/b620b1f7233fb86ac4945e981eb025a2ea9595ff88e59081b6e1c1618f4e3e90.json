@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"Online check-in opens 36 hours before departure and closes 3 hours before departure.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 388, "output": 36, "thinking": 0}, "latency_s": 3.751, "cost_usd": 1.2503653666663014e-05}

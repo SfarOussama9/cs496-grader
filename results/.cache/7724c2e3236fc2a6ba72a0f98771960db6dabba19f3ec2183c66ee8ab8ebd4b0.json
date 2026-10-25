@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"better\" : \"A\",\n\"reason\" : \"Answer A correctly states the long-haul extra legroom cost as EUR 50 per flight, matching policy S15.2. Answer B incorrectly states EUR 35, which is the medium-haul rate.\"}", "error": null, "tokens": {"input": 499, "output": 53, "thinking": 209}, "latency_s": 7.885, "cost_usd": 2.6284251666666027e-05}

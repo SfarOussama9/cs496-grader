@@ -1,0 +1,38 @@
+{
+ "run_id": "bias-jv1-pv1-dev-20260929-002844",
+ "kind": "bias",
+ "split": "dev",
+ "items": 50,
+ "prompts": {
+  "judge": "v1",
+  "pairwise": "v1",
+  "system_run": "system-sv1-jv1-dev-20260928-233858"
+ },
+ "models": {
+  "system": "qwen3:8b (no thinking)",
+  "judge": "qwen3:8b (thinking)"
+ },
+ "change": "judge_pairwise v1: choose the better of two answers, same criteria as judge v1",
+ "metric": "flip rate",
+ "score": 18.0,
+ "headline": "order flips 9/50 (18.0%); padding changes 0/44 (0.0%)",
+ "cost_usd_total": 0.012896,
+ "fresh_calls_cost_usd": 0.0,
+ "created_at": "20260929-002844",
+ "position": {
+  "pairs": 50,
+  "consistent": 41,
+  "flipped": 9,
+  "flip_pct": 18.0,
+  "non_tie_choices": 89,
+  "chose_first_shown": 46,
+  "chose_first_pct": 51.7
+ },
+ "verbosity": {
+  "items": 44,
+  "unchanged": 44,
+  "fail_to_pass": 0,
+  "pass_to_fail": 0,
+  "changed_pct": 0.0
+ }
+}

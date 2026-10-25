@@ -1,1 +1,0 @@
-{"model": "gemini-3.1-flash-lite", "raw": "{\n  \"answer\": \"Unfortunately, Corvina Airways does not cover minor damage resulting from normal handling, which includes scratches, scuffs, small dents, and small tears.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 382, "output": 48, "thinking": 0}, "latency_s": 1.179, "cost_usd": 0.0001675}

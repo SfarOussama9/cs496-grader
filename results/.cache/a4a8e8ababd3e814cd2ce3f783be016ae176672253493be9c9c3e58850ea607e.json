@@ -1,1 +1,0 @@
-{"model": "gemini-3.5-flash-lite", "raw": "{\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"Light fare tickets do not allow changes according to the policy.\"}", "error": null, "tokens": {"input": 1201, "output": 33, "thinking": 554}, "latency_s": 2.659, "cost_usd": 0.0018277999999999999}

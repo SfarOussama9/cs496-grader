@@ -55,6 +55,7 @@ def usage_summary(rows, prefix=""):
         "mean_thinking_tokens": mean("thinking"),
         "cost_per_item_usd": round(sum(r[prefix + "cost_usd"] for r in calls) / n, 6),
         "cost_per_1k_usd": round(1000 * sum(r[prefix + "cost_usd"] for r in calls) / n, 3),
+        "latency_mean_s": round(sum(lat) / len(lat), 3) if lat else None,
         "latency_median_s": lat[len(lat) // 2] if lat else None,
         "latency_p90_s": lat[int(len(lat) * 0.9)] if lat else None,
     }

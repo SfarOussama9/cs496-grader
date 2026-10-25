@@ -1,0 +1,56 @@
+{
+ "run_id": "system-sv2-jv1-dev-20260929-014634",
+ "kind": "system",
+ "split": "dev",
+ "items": 50,
+ "prompts": {
+  "system": "v2",
+  "judge": "v1"
+ },
+ "models": {
+  "system": "qwen3:8b (no thinking)",
+  "judge": "qwen3:8b (thinking)"
+ },
+ "change": "system v2: pick the value for the customer's exact case, state conditions, say so when the policy is silent",
+ "metric": "pass rate (judged)",
+ "score": 72.0,
+ "headline": "36/50 pass (72.0%)",
+ "cost_usd_total": 0.005092,
+ "fresh_calls_cost_usd": 0.004937,
+ "created_at": "20260929-014634",
+ "pass": 36,
+ "graded": 50,
+ "errors": 0,
+ "pass_pct": 72.0,
+ "by_category": {
+  "exception": "1/1",
+  "false_premise": "4/6",
+  "lookup": "10/11",
+  "multi_condition": "7/14",
+  "multi_part": "1/1",
+  "numeric": "6/9",
+  "uncovered": "7/8"
+ },
+ "system_usage": {
+  "calls": 50,
+  "mean_input_tokens": 534.6,
+  "mean_output_tokens": 71.3,
+  "mean_thinking_tokens": 0.0,
+  "cost_per_item_usd": 1.5e-05,
+  "cost_per_1k_usd": 0.015,
+  "latency_mean_s": 4.624,
+  "latency_median_s": 4.437,
+  "latency_p90_s": 6.193
+ },
+ "judge_usage": {
+  "calls": 50,
+  "mean_input_tokens": 898.5,
+  "mean_output_tokens": 69.7,
+  "mean_thinking_tokens": 724.8,
+  "cost_per_item_usd": 8.6e-05,
+  "cost_per_1k_usd": 0.086,
+  "latency_mean_s": 25.926,
+  "latency_median_s": 17.058,
+  "latency_p90_s": 55.092
+ }
+}

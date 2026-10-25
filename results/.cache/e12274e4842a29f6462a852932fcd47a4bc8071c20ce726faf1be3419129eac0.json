@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\"answer\": \"Yes, if your delayed flight requires an overnight stay, Corvina Airways will provide hotel accommodation and transport between the airport and the hotel.\",\"policy_covers_question\": true}", "error": null, "tokens": {"input": 475, "output": 41, "thinking": 0}, "latency_s": 3.22, "cost_usd": 1.073431433333705e-05}

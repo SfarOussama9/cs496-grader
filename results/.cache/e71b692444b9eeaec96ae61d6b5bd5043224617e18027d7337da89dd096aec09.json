@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"A Business class cabin bag may weigh up to 12 kg.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 250, "output": 33, "thinking": 0}, "latency_s": 3.215, "cost_usd": 1.0716860333329048e-05}

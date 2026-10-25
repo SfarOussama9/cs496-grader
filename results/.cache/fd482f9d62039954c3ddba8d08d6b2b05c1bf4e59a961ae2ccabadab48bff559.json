@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"The policy explicitly states that Silver and Gold status is valid until the end of the following calendar year, which matches the answer.\"}", "error": null, "tokens": {"input": 847, "output": 42, "thinking": 326}, "latency_s": 10.462, "cost_usd": 3.487434266666696e-05}

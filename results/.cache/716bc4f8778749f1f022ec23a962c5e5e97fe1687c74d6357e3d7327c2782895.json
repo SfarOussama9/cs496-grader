@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"Your 8-year-old will pay 80% of the adult fare, which is EUR 160.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 283, "output": 43, "thinking": 0}, "latency_s": 3.888, "cost_usd": 1.2959957999999766e-05}

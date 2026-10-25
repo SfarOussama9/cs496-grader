@@ -1,1 +1,0 @@
-{"model": "gemini-3.5-flash-lite", "raw": "{\"correct\":true,\"complete\":true,\"grounded\":true,\"reason\":\"The policy specifies that the EUR 90 fee applies to Classic refunds rather than Flex, and correctly details the actual Flex refund rules.\"}", "error": null, "tokens": {"input": 886, "output": 44, "thinking": 926}, "latency_s": 3.467, "cost_usd": 0.0026908}

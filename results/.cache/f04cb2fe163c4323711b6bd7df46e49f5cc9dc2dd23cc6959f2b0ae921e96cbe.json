@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"For a medium-haul flight departing at 14:30, the boarding gate closes 25 minutes before departure. Therefore, the latest time you can be at the gate is 14:05.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 278, "output": 64, "thinking": 0}, "latency_s": 3.735, "cost_usd": 1.2450652999996238e-05}

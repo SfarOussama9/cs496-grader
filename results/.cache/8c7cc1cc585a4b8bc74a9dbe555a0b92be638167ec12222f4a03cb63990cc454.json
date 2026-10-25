@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"The policy explicitly states that Corvina Club Gold members get free standard seat selection, matching the answer.\"}", "error": null, "tokens": {"input": 1083, "output": 38, "thinking": 310}, "latency_s": 10.292, "cost_usd": 3.43077970000013e-05}

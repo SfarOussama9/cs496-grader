@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"The policy explicitly states that Light passengers can add a cabin bag online up to 6 hours before departure, which the answer correctly states.\"}", "error": null, "tokens": {"input": 710, "output": 46, "thinking": 240}, "latency_s": 10.476, "cost_usd": 3.492155433333361e-05}

@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{ \"answer\": \"Yes, you can bring a personal item on a Light fare. All passengers, including Light passengers, may bring one personal item.\",\"policy_covers_question\": true }", "error": null, "tokens": {"input": 379, "output": 40, "thinking": 0}, "latency_s": 3.518, "cost_usd": 1.1725963000001987e-05}

@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{ \"answer\": \"The policy does not mention the minimum connection time when changing planes in Tunis. You may want to contact Corvina Airways for more information.\",\"policy_covers_question\": false }", "error": null, "tokens": {"input": 803, "output": 42, "thinking": 0}, "latency_s": 3.834, "cost_usd": 1.2781244666663648e-05}

@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\"answer\": \"The policy does not mention anything about bringing breast milk in a cabin bag. For specific guidelines on\u643a\u5e26 breast milk, please contact Corvina Airways.\",\"policy_covers_question\": false}", "error": null, "tokens": {"input": 378, "output": 43, "thinking": 0}, "latency_s": 3.732, "cost_usd": 1.244007799999963e-05}

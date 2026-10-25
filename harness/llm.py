@@ -1,63 +1,25 @@
-"""One structured Gemini call, with retries, a disk cache and cost/latency logging.
+"""One structured model call to a local Ollama model, with a disk cache and
+token/latency/cost logging.
 
-Every call is cached under results/.cache/ keyed by model, prompt, input and
-schema. Re-running an unchanged experiment costs nothing and reproduces the
-same results, even without an API key (the cache is committed).
+Every call is cached under results/.cache/ keyed by model, prompt, input, schema
+and thinking setting. Re-running an unchanged experiment costs nothing and
+reproduces the same results (the cache is committed).
 """
 import hashlib
 import json
-import os
-import threading
 import time
+import urllib.error
+import urllib.request
 
-from dotenv import load_dotenv
-from google import genai
-from google.genai import errors, types
 from pydantic import ValidationError
 
-from harness.config import CACHE, REQUESTS_PER_MINUTE, ROOT, cost_usd
-
-RETRYABLE = {429, 500, 503, 504}
-BACKOFF_SECONDS = [5, 10, 20, 40, 60, 60]
-_client = None
-_client_lock = threading.Lock()
-_pace_lock = threading.Lock()
-_next_slot = {}  # model -> earliest time the next request may start
+from harness.config import CACHE, OLLAMA_OPTIONS, OLLAMA_URL, cost_usd
 
 
-def _get_client():
-    # One shared client: a second client created by a racing thread would replace
-    # the first, which then gets closed while other threads are still using it.
-    global _client
-    with _client_lock:
-        if _client is None:
-            load_dotenv(ROOT / ".env")
-            key = os.environ.get("GEMINI_API_KEY")
-            if not key:
-                raise SystemExit("GEMINI_API_KEY is not set: put it in .env (see README).")
-            _client = genai.Client(api_key=key)
-    return _client
-
-
-def _wait_for_slot(model):
-    """Space requests to one model evenly so the per-minute quota is never exceeded."""
-    interval = 60 / REQUESTS_PER_MINUTE.get(model, 10)
-    with _pace_lock:
-        now = time.monotonic()
-        start = max(now, _next_slot.get(model, now))
-        _next_slot[model] = start + interval
-    time.sleep(start - now)
-
-
-def _cache_key(model, system_prompt, user_content, schema, thinking):
-    blob = json.dumps([model, system_prompt, user_content, schema.model_json_schema(), thinking], sort_keys=True)
-    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
-
-
-def call(model, system_prompt, user_content, schema, thinking=None):
+def call(model, system_prompt, user_content, schema, thinking=False):
     """Return a dict: parsed (schema instance or None), error, tokens, latency_s, cost_usd, cached.
 
-    thinking: None for the model's default, or a level such as "high".
+    thinking: False to answer directly, True to reason before answering.
     """
     key = _cache_key(model, system_prompt, user_content, schema, thinking)
     path = CACHE / f"{key}.json"
@@ -65,7 +27,7 @@ def call(model, system_prompt, user_content, schema, thinking=None):
         record = json.loads(path.read_text(encoding="utf-8"))
         record["cached"] = True
     else:
-        record = _call_api(model, system_prompt, user_content, schema, thinking)
+        record = _call_ollama(model, system_prompt, user_content, schema, thinking)
         if record["error"] is None:  # never cache failures
             CACHE.mkdir(parents=True, exist_ok=True)
             path.write_text(json.dumps(record), encoding="utf-8")
@@ -77,37 +39,41 @@ def call(model, system_prompt, user_content, schema, thinking=None):
     return record
 
 
-def _call_api(model, system_prompt, user_content, schema, thinking):
-    config = types.GenerateContentConfig(
-        system_instruction=system_prompt,
-        response_mime_type="application/json",
-        response_schema=schema,
-        automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
-        thinking_config=types.ThinkingConfig(thinking_level=thinking) if thinking else None,
-    )
+def _cache_key(model, system_prompt, user_content, schema, thinking):
+    blob = json.dumps([model, system_prompt, user_content, schema.model_json_schema(), thinking], sort_keys=True)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def _call_ollama(model, system_prompt, user_content, schema, thinking):
+    body = {
+        "model": model, "stream": False, "think": bool(thinking),
+        "format": schema.model_json_schema(), "options": OLLAMA_OPTIONS,
+        "messages": [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_content}],
+    }
+    request = urllib.request.Request(f"{OLLAMA_URL}/api/chat", data=json.dumps(body).encode("utf-8"),
+                                     headers={"Content-Type": "application/json"})
     last_error = None
-    for wait in [0] + BACKOFF_SECONDS:
-        time.sleep(wait)
-        _wait_for_slot(model)
+    for attempt in range(3):
         start = time.perf_counter()
         try:
-            resp = _get_client().models.generate_content(model=model, contents=user_content, config=config)
-        except errors.APIError as e:
-            last_error = f"{e.code} {e.status}"
-            if e.code in RETRYABLE:
-                continue
-            break
+            with urllib.request.urlopen(request, timeout=900) as r:
+                resp = json.load(r)
+        except urllib.error.URLError as e:
+            if isinstance(getattr(e, "reason", None), ConnectionRefusedError):
+                raise SystemExit(f"Ollama is not running at {OLLAMA_URL}: start the Ollama app, then rerun.")
+            last_error = f"ollama: {e}"
+            time.sleep(5 * (attempt + 1))
+            continue
         latency = time.perf_counter() - start
-        usage = resp.usage_metadata
-        tokens = {
-            "input": usage.prompt_token_count or 0,
-            "output": usage.candidates_token_count or 0,
-            "thinking": usage.thoughts_token_count or 0,
-        }
-        return {
-            "model": model, "raw": resp.text, "error": None if resp.text else "empty response",
-            "tokens": tokens, "latency_s": round(latency, 3),
-            "cost_usd": cost_usd(model, tokens["input"], tokens["output"] + tokens["thinking"]),
-        }
+        message = resp.get("message", {})
+        content, reasoning = message.get("content", ""), message.get("thinking") or ""
+        # Ollama reports one count for all generated tokens; split it between
+        # reasoning and answer in proportion to their length.
+        generated = resp.get("eval_count", 0)
+        thinking_tokens = round(generated * len(reasoning) / max(1, len(reasoning) + len(content)))
+        tokens = {"input": resp.get("prompt_eval_count", 0), "output": generated - thinking_tokens,
+                  "thinking": thinking_tokens}
+        return {"model": model, "raw": content, "error": None if content else "empty response",
+                "tokens": tokens, "latency_s": round(latency, 3), "cost_usd": cost_usd(latency)}
     return {"model": model, "raw": None, "error": last_error, "tokens": {"input": 0, "output": 0, "thinking": 0},
             "latency_s": None, "cost_usd": 0.0}

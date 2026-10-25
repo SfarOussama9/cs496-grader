@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n  \"answer\": \"In Business class, each cabin bag has a weight limit of 12 kg.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 736, "output": 35, "thinking": 0}, "latency_s": 3.709, "cost_usd": 1.2361757666670505e-05}

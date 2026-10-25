@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\"answer\": \"The policy does not mention taxi reimbursement for passengers whose flights are cancelled. You may want to contact Corvina Airways for further assistance.\",\"policy_covers_question\": false}", "error": null, "tokens": {"input": 472, "output": 40, "thinking": 0}, "latency_s": 3.528, "cost_usd": 1.1761385333332631e-05}

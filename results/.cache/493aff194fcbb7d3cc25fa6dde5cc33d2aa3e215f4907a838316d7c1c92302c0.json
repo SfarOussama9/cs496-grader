@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": true, \"complete\": true, \"grounded\": true, \"reason\": \"The policy explicitly prohibits lithium-ion batteries exceeding 300 Wh, and the answer correctly identifies that 350 Wh violates this limit.\"}", "error": null, "tokens": {"input": 822, "output": 47, "thinking": 447}, "latency_s": 13.245, "cost_usd": 4.414835133333327e-05}

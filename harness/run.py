@@ -3,7 +3,7 @@
 Usage (from the repo root):
     python -m harness.run judge  --prompt v1 --split dev
     python -m harness.run system --prompt v1 --judge-prompt v1 --split dev
-    python -m harness.run bias   --judge-prompt v1 --pairwise-prompt v1 --system-run <run id> --split dev
+    python -m harness.run bias   --judge-prompt v1 --pairwise-prompt v1 --split dev
 
 judge   grades every golden answer and compares the judge with the human labels.
 system  lets the system answer every golden question, then the judge grades it.
@@ -20,7 +20,8 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 
 from harness import llm
-from harness.config import GOLD_LABELS, JUDGE_MODEL, JUDGE_THINKING, META, PROMPTS, RESULTS, SPLIT, SYSTEM_MODEL
+from harness.config import (GOLD_LABELS, JUDGE_MODEL, JUDGE_THINKING, META, PROMPTS, RESULTS, SPLIT,
+                            SYSTEM_MODEL, SYSTEM_THINKING)
 from harness.data import load_items, load_jsonl, load_sections, policy_context
 from harness.metrics import agreement, breakdown, usage_summary
 from harness.schema import JudgeGrade, PairwiseChoice, SystemAnswer
@@ -83,12 +84,13 @@ def grade(judge_prompt, policy, question, answer, prefix="judge_"):
 
 
 def run_parallel(fn, rows, workers):
+    print(f"Running {len(rows)} items, one line per finished item...", flush=True)
     done = []
     with ThreadPoolExecutor(max_workers=workers) as pool:
         for n, result in enumerate(pool.map(fn, rows), 1):
             done.append(result)
-            if n % 10 == 0 or n == len(rows):
-                print(f"  {n}/{len(rows)}", flush=True)
+            verdict = result.get("judge_verdict") or ("done" if "position" in result or "verbosity" in result else "")
+            print(f"  {n}/{len(rows)}  {result['id']}  {verdict}", flush=True)
     return done
 
 
@@ -130,7 +132,7 @@ def cmd_system(args):
     def one(it):
         policy = policy_context(it, sections)
         user = f"POLICY EXCERPT:\n{policy}\n\nCUSTOMER QUESTION:\n{it['question']}"
-        rec = llm.call(SYSTEM_MODEL, prompt, user, SystemAnswer)
+        rec = llm.call(SYSTEM_MODEL, prompt, user, SystemAnswer, SYSTEM_THINKING)
         ans = rec["parsed"]
         row = {"id": it["id"], "split": args.split, "category": it["category"],
                "input": {"question": it["question"], "sections": it["sections"]},
@@ -167,6 +169,9 @@ def cmd_bias(args):
     pair_prompt, change = load_prompt("judge_pairwise", args.pairwise_prompt)
     sections = load_sections()
     rows = load_golden(args.split, args.limit)
+    if args.system_run == "latest":
+        args.system_run = latest_run("system", args.split)
+        print(f"Using system run {args.system_run}")
     system_rows = {r["id"]: r for r in load_jsonl(RESULTS / f"{args.system_run}.jsonl")}
 
     def one(it):
@@ -231,6 +236,21 @@ def cmd_bias(args):
 
 # ---------- output ----------
 
+def latest_run(kind, split):
+    """The most recent logged run of this kind and split made with the current models."""
+    runs = load_jsonl(RUNS_INDEX) if RUNS_INDEX.exists() else []
+    label = models_label({"models": models_used()})
+    matching = [r for r in runs if r["kind"] == kind and r["split"] == split and models_label(r) == label]
+    if not matching:
+        sys.exit(f"no logged {kind} run on {split} with the current models; run it first")
+    return matching[-1]["run_id"]
+
+
+def models_used():
+    think = lambda t: "thinking" if t else "no thinking"
+    return {"system": f"{SYSTEM_MODEL} ({think(SYSTEM_THINKING)})", "judge": f"{JUDGE_MODEL} ({think(JUDGE_THINKING)})"}
+
+
 def finish(args, kind, prompts, change, results, summary, metric, headline, score):
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
     versions = "-".join(f"{k[0]}{v}" for k, v in prompts.items() if k != "system_run")
@@ -240,7 +260,7 @@ def finish(args, kind, prompts, change, results, summary, metric, headline, scor
         for r in sorted(results, key=lambda r: r["id"]):
             f.write(json.dumps(r) + "\n")
     meta = {"run_id": run_id, "kind": kind, "split": args.split, "items": len(results), "prompts": prompts,
-            "models": {"system": SYSTEM_MODEL, "judge": JUDGE_MODEL, "judge_thinking": JUDGE_THINKING}, "change": change,
+            "models": models_used(), "change": change,
             "metric": metric, "score": score, "headline": headline,
             "cost_usd_total": round(sum(total_cost(r) for r in results), 6),
             "fresh_calls_cost_usd": round(sum(total_cost(r, fresh_only=True) for r in results), 6),
@@ -249,7 +269,10 @@ def finish(args, kind, prompts, change, results, summary, metric, headline, scor
                                                      encoding="utf-8")
     print(f"\n{run_id}\n{metric}: {headline}")
     print(json.dumps(summary, indent=1))
-    if not args.limit:
+    if summary.get("errors"):
+        print(f"\nNOT logged in the changelog: {summary['errors']} items failed (API errors). "
+              "Rerun the same command later; finished calls are reused from the cache.")
+    elif not args.limit:
         log_run(meta)
 
 
@@ -265,20 +288,25 @@ def total_cost(row, fresh_only=False):
 
 def log_run(meta):
     runs = load_jsonl(RUNS_INDEX) if RUNS_INDEX.exists() else []
-    same = [r for r in runs if (r["kind"], r["split"]) == (meta["kind"], meta["split"])]
+    same = [r for r in runs if (r["kind"], r["split"], models_label(r)) == (meta["kind"], meta["split"], models_label(meta))]
     if same and same[-1]["prompts"] == meta["prompts"] and same[-1]["score"] == meta["score"]:
-        print("(same prompts and score as the last logged run: changelog unchanged)")
+        print("(same models, prompts and score as the last logged run: changelog unchanged)")
         return
     with RUNS_INDEX.open("a", encoding="utf-8", newline="\n") as f:
         f.write(json.dumps(meta) + "\n")
     write_changelog(runs + [meta])
 
 
+def models_label(run):
+    m = run.get("models", {})
+    return f"system {m.get('system')}, judge {m.get('judge')}"
+
+
 def write_changelog(runs):
     lines = ["# Prompt changelog", "",
              "Generated by `harness.run` from `results/runs.jsonl`: every logged run, with the score before "
              "and after each prompt change. Prompts live in `prompts/<kind>/vN.md`; the first line of each "
-             "file says what changed.", ""]
+             "file says what changed. Scores are only compared between runs that used the same models.", ""]
     titles = {"system": "System (pass rate, graded by the judge)", "judge": "Judge (agreement with human labels)",
               "bias": "Judge bias checks (position flip rate)"}
     for kind in ("system", "judge", "bias"):
@@ -287,14 +315,16 @@ def write_changelog(runs):
             if not rows:
                 continue
             lines += [f"## {titles[kind]}: {split} split", "",
-                      "| Date (UTC) | Prompts | Change | Result | Before -> after | Run |", "|---|---|---|---|---|---|"]
-            prev = None
+                      "| Date (UTC) | Models | Prompts | Change | Result | Before -> after | Run |",
+                      "|---|---|---|---|---|---|---|"]
+            prev = {}
             for r in rows:
+                label = models_label(r)
                 prompts = ", ".join(f"{k} {v}" for k, v in r["prompts"].items() if k != "system_run")
-                delta = "first run" if prev is None else f"{prev} -> {r['score']}"
-                lines.append(f"| {r['created_at'][:8]} | {prompts} | {r['change']} | {r['headline']} | {delta} "
-                             f"| `{r['run_id']}` |")
-                prev = r["score"]
+                delta = "first run" if label not in prev else f"{prev[label]} -> {r['score']}"
+                lines.append(f"| {r['created_at'][:8]} | {label} | {prompts} | {r['change']} | {r['headline']} "
+                             f"| {delta} | `{r['run_id']}` |")
+                prev[label] = r["score"]
             lines.append("")
     CHANGELOG.write_text("\n".join(lines), encoding="utf-8", newline="\n")
 
@@ -306,13 +336,16 @@ def main():
         p = sub.add_parser(name)
         p.add_argument("--split", choices=["dev", "test", "all"], default="dev")
         p.add_argument("--limit", type=int, default=0, help="only the first N items (smoke test, not logged)")
-        p.add_argument("--workers", type=int, default=4, help="parallel calls")
+        p.add_argument("--workers", type=int, default=1,
+                       help="parallel calls (default 1: a local GPU serves one request at a time, and queueing "
+                            "would distort the measured latency)")
     sub.choices["judge"].add_argument("--prompt", default="v1")
     sub.choices["system"].add_argument("--prompt", default="v1")
     sub.choices["system"].add_argument("--judge-prompt", default="v1")
     sub.choices["bias"].add_argument("--judge-prompt", default="v1")
     sub.choices["bias"].add_argument("--pairwise-prompt", default="v1")
-    sub.choices["bias"].add_argument("--system-run", required=True, help="run id of a system run on the same split")
+    sub.choices["bias"].add_argument("--system-run", default="latest",
+                                     help="run id of a system run on the same split (default: the latest one)")
     args = parser.parse_args()
     sys.stdout.reconfigure(encoding="utf-8")
     {"judge": cmd_judge, "system": cmd_system, "bias": cmd_bias}[args.command](args)

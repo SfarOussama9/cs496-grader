@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{ \"answer\": \"Yes, since the next available Corvina flight departs more than 24 hours after your original departure, you may request rebooking on a partner airline.\",\"policy_covers_question\": true }", "error": null, "tokens": {"input": 350, "output": 47, "thinking": 0}, "latency_s": 3.697, "cost_usd": 1.2324541333334007e-05}

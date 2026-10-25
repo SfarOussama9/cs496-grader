@@ -1,0 +1,56 @@
+{
+ "run_id": "system-sv1-jv1-dev-20260928-233858",
+ "kind": "system",
+ "split": "dev",
+ "items": 50,
+ "prompts": {
+  "system": "v1",
+  "judge": "v1"
+ },
+ "models": {
+  "system": "qwen3:8b (no thinking)",
+  "judge": "qwen3:8b (thinking)"
+ },
+ "change": "system v1: baseline, answer the customer from the policy excerpt",
+ "metric": "pass rate (judged)",
+ "score": 74.0,
+ "headline": "37/50 pass (74.0%)",
+ "cost_usd_total": 0.006965,
+ "fresh_calls_cost_usd": 0.006855,
+ "created_at": "20260928-233858",
+ "pass": 37,
+ "graded": 50,
+ "errors": 0,
+ "pass_pct": 74.0,
+ "by_category": {
+  "exception": "0/1",
+  "false_premise": "3/6",
+  "lookup": "10/11",
+  "multi_condition": "11/14",
+  "multi_part": "1/1",
+  "numeric": "7/9",
+  "uncovered": "5/8"
+ },
+ "system_usage": {
+  "calls": 50,
+  "mean_input_tokens": 406.6,
+  "mean_output_tokens": 85.6,
+  "mean_thinking_tokens": 0.0,
+  "cost_per_item_usd": 1.7e-05,
+  "cost_per_1k_usd": 0.017,
+  "latency_mean_s": 5.199,
+  "latency_median_s": 4.607,
+  "latency_p90_s": 6.586
+ },
+ "judge_usage": {
+  "calls": 50,
+  "mean_input_tokens": 911.9,
+  "mean_output_tokens": 72.9,
+  "mean_thinking_tokens": 770.0,
+  "cost_per_item_usd": 0.000122,
+  "cost_per_1k_usd": 0.122,
+  "latency_mean_s": 36.591,
+  "latency_median_s": 19.763,
+  "latency_p90_s": 72.978
+ }
+}

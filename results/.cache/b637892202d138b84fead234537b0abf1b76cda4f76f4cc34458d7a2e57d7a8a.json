@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\"answer\": \"Under the Flex fare family, each checked bag has a weight limit of 27 kg.\",\"policy_covers_question\": true}", "error": null, "tokens": {"input": 781, "output": 33, "thinking": 0}, "latency_s": 3.257, "cost_usd": 1.0856739333333584e-05}

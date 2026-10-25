@@ -1,0 +1,1 @@
+{"model": "qwen3:8b", "raw": "{\n\n\"correct\": false, \"complete\": true, \"grounded\": false, \"reason\": \"The policy contains no mention of travel insurance, yet the answer asserts that Flex fares include it, which is unsupported.\"}", "error": null, "tokens": {"input": 836, "output": 42, "thinking": 448}, "latency_s": 13.407, "cost_usd": 4.469084099999843e-05}

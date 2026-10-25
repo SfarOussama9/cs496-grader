@@ -1,1 +1,0 @@
-{"model": "gemini-3.1-flash-lite", "raw": "{\n  \"answer\": \"Tickets cannot be transferred to another person under any circumstances.\",\n  \"policy_covers_question\": true\n}", "error": null, "tokens": {"input": 417, "output": 30, "thinking": 0}, "latency_s": 6.964, "cost_usd": 0.00014925}
