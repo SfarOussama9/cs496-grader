@@ -1,4 +1,4 @@
-# The Grader: Corvina Airways policy QA
+# PolicyJudge: Corvina Airways policy QA
 
 CS496 AI Engineering, Project 1. An evaluation harness and an LLM judge for a task with no single correct answer: answering customer questions about an airline's policy.
 

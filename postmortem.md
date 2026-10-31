@@ -1,4 +1,4 @@
-# Postmortem: Project 1, The Grader
+# Postmortem: Project 1, PolicyJudge
 
 Team: Oussama Sfar, Ines Turki, Feriel Charrad, Faten Toujani.
 
